@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "nuxt": {
+      "httpUrl": "https://nuxt.com/mcp",
+      "timeout": 5000
+    },
+    "nuxt-ui": {
+      "httpUrl": "https://ui.nuxt.com/mcp",
+      "timeout": 5000
+    }
+  }
+}
