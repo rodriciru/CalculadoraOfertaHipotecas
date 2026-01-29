@@ -1,5 +1,5 @@
 <template>
-  <UModal v-model:open="open" title="Gráfico de Amortización para {{ resultado?.banco }}">
+  <UModal v-model:open="open" title="Gráfico de Amortización para {{ resultado?.banco }}" :ui="{ content: 'sm:max-w-4xl max-h-[calc(100dvh-4rem)]' }">
     <template #body>
       <canvas ref="chartCanvas"></canvas>
     </template>
@@ -20,7 +20,10 @@ const props = defineProps<{
 const emit = defineEmits(['update:modelValue']);
 
 
-const open = ref(false)
+const open = computed({
+  get: () => props.modelValue,
+  set: (value) => emit('update:modelValue', value),
+});
 
 const chartCanvas = ref<HTMLCanvasElement | null>(null);
 let chartInstance: Chart | null = null;
