@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparador de Hipotecas</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // Personaliza colores si es necesario
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Estilos personalizados que no se pueden hacer fácilmente con Tailwind o para overrides */
+        .best-choice {
+            background-color: #d1fae5 !important; /* Tailwind green-100 */
+        }
+        .best-choice td:first-child::before {
+            content: "⭐ ";
+            font-weight: bold;
+        }
+        /* Asegurar que el scroll horizontal funcione para tablas grandes en pantallas pequeñas */
+        .table-responsive {
+            overflow-x: auto;
+        }
+        /* Estilos para la lista de bonificaciones */
+        .bonificaciones-lista {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            font-size: 0.875em; /* sm text size */
+        }
+        .total-bonificacion {
+            font-weight: bold;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid theme('colors.gray.300');
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-100 text-gray-800 p-4">
+
+    <div class="container mx-auto max-w-8xl bg-white shadow-lg rounded-xl p-8 my-8">
+        <h1 class="text-4xl font-extrabold text-blue-800 text-center mb-10">Comparador de Hipotecas</h1>
+
+        <div class="flex flex-col md:flex-row items-center justify-center gap-6 mb-10">
+            <div class="flex flex-col">
+                <label for="importe" class="text-gray-700 font-semibold mb-2">Importe del Préstamo (€)</label>
+                <input type="number" id="importe" value="136000" step="1000" 
+                       class="p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 w-full md:w-52">
+            </div>
+            <div class="flex flex-col">
+                <label for="plazo" class="text-gray-700 font-semibold mb-2">Plazo (años)</label>
+                <input type="number" id="plazo" value="27" 
+                       class="p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 w-full md:w-36">
+            </div>
+            <div class="flex flex-col">
+                <label for="euribor" class="text-gray-700 font-semibold mb-2">Euríbor Actual (%)</label>
+                <input type="number" id="euribor" value="3.5" step="0.01"
+                       class="p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 w-full md:w-36">
+            </div>
+            <button id="calcular" 
+                    class="mt-6 md:mt-0 px-6 py-3 bg-blue-600 text-white font-bold rounded-md shadow-md 
+                           hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 transition-colors duration-200">
+                Calcular
+            </button>
+        </div>
+
+        <!-- Productos Personales Adicionales -->
+        <div class="mb-8 p-6 bg-gray-50 rounded-lg shadow-sm">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">Productos Personales Adicionales (no bonificables)</h2>
+            <p class="text-gray-600 mb-4">Selecciona y añade productos que contratarías por tu cuenta. Su coste anual se sumará al coste total de las ofertas de hipotecas que no los incluyan como bonificación.</p>
+            
+            <div id="personal-bonuses-container" class="mb-4 space-y-2">
+                <!-- Aquí se añadirán dinámicamente los productos personales -->
+            </div>
+
+            <div class="flex flex-wrap items-center gap-4 mt-6 p-4 border-t border-gray-200 pt-4">
+                <div class="flex-grow">
+                    <label for="newPersonalBonusSelect" class="sr-only">Seleccionar Producto</label>
+                    <select id="newPersonalBonusSelect" class="p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 w-full">
+                        <!-- Opciones cargadas desde personalProducts.json -->
+                    </select>
+                </div>
+                <div class="w-32">
+                    <label for="newPersonalBonusCost" class="sr-only">Coste Anual (€)</label>
+                    <input type="number" id="newPersonalBonusCost" value="0" step="10" min="0" placeholder="Coste Anual (€)"
+                           class="p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 w-full">
+                </div>
+                <button id="addPersonalBonusBtn" 
+                        class="px-4 py-2 bg-green-600 text-white font-bold rounded-md shadow-md 
+                               hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-75 transition-colors duration-200">
+                    Añadir Producto
+                </button>
+            </div>
+        </div>
+
+        <div id="tabla-resultados" class="table-responsive">
+            <!-- La tabla se generará aquí con JavaScript -->
+        </div>
+    </div>
+
+    <!-- Modal para el Gráfico -->
+    <div id="chart-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50 transition-opacity duration-300">
+        <div class="bg-white rounded-lg shadow-2xl w-full max-w-4xl max-h-full overflow-auto p-6 relative">
+            <button id="close-modal-btn" class="absolute top-3 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+            <h2 id="chart-title" class="text-2xl font-bold text-center mb-4">Gráfico de Amortización</h2>
+            <div class="w-full h-96">
+                <canvas id="amortization-chart"></canvas>
+            </div>
+        </div>
+    </div>
+    <!-- Nuestro script principal se carga al final para asegurar que todas las librerías estén disponibles -->
+    <script type="module" src="./calculadora.ts"></script>
+
+</body>
+</html>
