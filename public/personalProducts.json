@@ -1,0 +1,7 @@
+[
+  { "nombre": "Seguro de Vida", "costeAnual": 200 },
+  { "nombre": "Seguro de Hogar", "costeAnual": 300 },
+  { "nombre": "Plan de Pensiones", "costeAnual": 150 },
+  { "nombre": "Tarjeta de Crédito", "costeAnual": 50 },
+  { "nombre": "Fondo de Inversión", "costeAnual": 100 }
+]

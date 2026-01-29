@@ -1,20 +1,10 @@
 {
-  "compilerOptions": {
-    /* Base Options */
-    "target": "ESNext",                       // Compila a la última versión de JS compatible con navegadores actuales.
-    "module": "ESNext",                      // Usa el sistema de módulos estándar moderno (ESM).
-    "moduleResolution": "bundler",           // Estrategia de resolución de módulos para bundlers como Vite.
-    "esModuleInterop": true,                 // Mejora la compatibilidad entre diferentes tipos de módulos.
-    "forceConsistentCasingInFileNames": true,// Evita problemas de mayúsculas/minúsculas en los nombres de archivo.
-    
-    /* Strict Type-Checking Options */
-    "strict": true,                          // Habilita todas las opciones de comprobación de tipos estrictas.
-    "skipLibCheck": true,                    // Evita la comprobación de tipos en los archivos de declaración de librerías.
-    
-    /* Output Options */
-    "outDir": "./",                          // Especifica que el .js resultante se guarde en el mismo directorio.
-    "rootDir": "./"                          // El directorio raíz de los archivos de entrada .ts.
-  },
-  "include": ["**/*.ts"],                     // Incluye todos los archivos .ts del proyecto para la compilación.
-  "exclude": ["node_modules"]                // Excluye la carpeta de dependencias.
+  // https://nuxt.com/docs/guide/concepts/typescript
+  "files": [],
+  "references": [
+    { "path": "./.nuxt/tsconfig.app.json" },
+    { "path": "./.nuxt/tsconfig.server.json" },
+    { "path": "./.nuxt/tsconfig.shared.json" },
+    { "path": "./.nuxt/tsconfig.node.json" }
+  ]
 }

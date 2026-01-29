@@ -1,5 +1,29 @@
-node_modules
-comparativa_hipotecas.pdf
+# Nuxt dev/build outputs
+.output
+.data
+.nuxt
+.nitro
+.cache
 dist
+
+# Node dependencies
+node_modules
+
+# Logs
+logs
+*.log
+
+# Misc
+.DS_Store
+.fleet
+.idea
+
+# Local env files
+.env
+.env.*
+!.env.example
+
+
+comparativa_hipotecas.pdf
 Captura de pantalla 2026-01-22 151842.png
 añadir un generador del json.txt
