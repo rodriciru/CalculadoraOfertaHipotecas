@@ -1,6 +1,6 @@
 <template>
-  <div class="container mx-auto max-w-8xl bg-white shadow-lg rounded-xl p-8 my-8">
-    <h1 class="text-4xl font-extrabold text-blue-800 text-center mb-10">Comparador de Hipotecas</h1>
+  <div class="container mx-auto max-w-8xl shadow-lg rounded-xl p-8 my-8">
+
 
     <div class="flex flex-col md:flex-row items-center justify-center gap-6 mb-10">
       <UFormField label="Importe del Préstamo (€)" class="w-full md:w-52">
@@ -18,16 +18,16 @@
     </div>
 
     <!-- Productos Personales Adicionales -->
-    <div class="mb-8 p-6 bg-gray-50 rounded-lg shadow-sm">
-      <h2 class="text-xl font-bold text-gray-800 mb-4">Productos Personales Adicionales (no bonificables)</h2>
-      <p class="text-gray-600 mb-4">Selecciona y añade productos que contratarías por tu cuenta. Su coste anual se
+    <div class="mb-8 p-6 rounded-lg shadow-sm">
+      <h2 class="text-xl font-bold  mb-4">Productos Personales Adicionales (no bonificables)</h2>
+      <p class="mb-4">Selecciona y añade productos que contratarías por tu cuenta. Su coste anual se
         sumará
         al coste total de las ofertas de hipotecas que no los incluyan como bonificación.</p>
 
       <BonificacionesPersonales :bonificaciones="personalBonificaciones" @alternar="alternarBonificacionPersonal"
         @actualizar:coste="actualizarCosteBonificacionPersonal" @eliminar="eliminarBonificacionPersonal" />
 
-      <div class="flex flex-wrap items-center gap-4 mt-6 p-4 border-t border-gray-200 pt-4">
+      <div class="flex flex-wrap items-center gap-4 mt-6 p-4 border-t pt-4">
         <div class="flex-grow">
           <USelect v-model="nuevoBonusSeleccionado" :options="productosPersonalesPredefinidos.map(b => b.nombre)" />
         </div>

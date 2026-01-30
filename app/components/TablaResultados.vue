@@ -22,7 +22,7 @@ const columns: TableColumn<IResultadoCalculo>[] = [
             const res = row.original // Accedemos al objeto completo de la fila
 
             // 1. Construir cabecera: Banco (Tipo)
-            const header = h('strong', `${res.banco} (${res.tipo})`)
+            const header = h('strong', { class: 'text-gray-900 dark:text-white' }, `${res.banco} (${res.tipo})`)
 
             // 2. Construir detalles de TIN/Diferencial según tipo
             let rateDetails = null
@@ -33,7 +33,7 @@ const columns: TableColumn<IResultadoCalculo>[] = [
                         res.isAssumedBaseRate ? h('span', { class: 'font-bold text-blue-700' }, '*') : null
                     ]),
                     (res.isAssumedBaseRate && res.oferta.tinBonificado !== undefined)
-                        ? h('span', { class: 'block text-xs' }, `(Inferido de TIN Bonificado: ${res.oferta.tinBonificado.toFixed(2)}%)`)
+                        ? h('span', { class: 'block text-xs text-gray-500 dark:text-gray-300' }, `(Inferido de TIN Bonificado: ${res.oferta.tinBonificado.toFixed(2)}%)`)
                         : null
                 ]
             } else if (res.oferta.tipo === 'variable') {
@@ -43,7 +43,7 @@ const columns: TableColumn<IResultadoCalculo>[] = [
                         res.isAssumedBaseRate ? h('span', { class: 'font-bold text-blue-700' }, '*') : null
                     ]),
                     (res.isAssumedBaseRate && res.oferta.diferencialBonificado !== undefined)
-                        ? h('span', { class: 'block text-xs' }, `(Inferido de Dif. Bonificado: ${res.oferta.diferencialBonificado.toFixed(2)}%)`)
+                        ? h('span', { class: 'block text-xs text-gray-500 dark:text-gray-300' }, `(Inferido de Dif. Bonificado: ${res.oferta.diferencialBonificado.toFixed(2)}%)`)
                         : null
                 ]
             } else if (res.oferta.tipo === 'mixta') {
@@ -53,7 +53,7 @@ const columns: TableColumn<IResultadoCalculo>[] = [
                         res.isAssumedBaseRate ? h('span', { class: 'font-bold text-blue-700' }, '*') : null
                     ]),
                     (res.isAssumedBaseRate && res.oferta.tinFijoBonificado !== undefined)
-                        ? h('span', { class: 'block text-xs' }, `(Inferido de TIN Fijo Bonificado: ${res.oferta.tinFijoBonificado.toFixed(2)}%)`)
+                        ? h('span', { class: 'block text-xs text-gray-500 dark:text-gray-300' }, `(Inferido de TIN Fijo Bonificado: ${res.oferta.tinFijoBonificado.toFixed(2)}%)`)
                         : null
                 ]
             }
@@ -62,10 +62,10 @@ const columns: TableColumn<IResultadoCalculo>[] = [
             const expenses = h('div', { class: 'mt-2 text-xs' }, [
                 h('strong', `Gastos Iniciales: ${formatearNumero(res.desgloseGastos.total)}`),
                 h('ul', { class: 'list-disc list-inside ml-2' }, [
-                    h('li', `Tasación: ${formatearNumero(res.desgloseGastos.tasacion)}`),
-                    h('li', `Bróker: ${formatearNumero(res.desgloseGastos.broker)}`),
-                    h('li', `Otros: ${formatearNumero(res.desgloseGastos.otros)}`),
-                    h('li', `Cancelación Anterior: ${formatearNumero(res.desgloseGastos.cancelacionAnterior)}`),
+                    h('li', { class: 'text-gray-500 dark:text-gray-300' }, `Tasación: ${formatearNumero(res.desgloseGastos.tasacion)}`),
+                    h('li', { class: 'text-gray-500 dark:text-gray-300' }, `Bróker: ${formatearNumero(res.desgloseGastos.broker)}`),
+                    h('li', { class: 'text-gray-500 dark:text-gray-300' }, `Otros: ${formatearNumero(res.desgloseGastos.otros)}`),
+                    h('li', { class: 'text-gray-500 dark:text-gray-300' }, `Cancelación Anterior: ${formatearNumero(res.desgloseGastos.cancelacionAnterior)}`),
                 ])
             ])
 
@@ -79,9 +79,7 @@ const columns: TableColumn<IResultadoCalculo>[] = [
             const res = row.original
 
             // TAE
-            const tae = h('strong', { class: 'block' }, `TAE: ${formatearNumero(res.taeConBonificar, 'percent')}`)
-
-            // Detalles de Tipo (TIN Bonificado, etc)
+            const tae = h('strong', { class: 'block text-gray-900 dark:text-white' }, `TAE: ${formatearNumero(res.taeConBonificar, 'percent')}`)            // Detalles de Tipo (TIN Bonificado, etc)
             let typeDetails = null
             if (res.oferta.tipo === 'fija') {
                 typeDetails = h('div', [h('span', { class: 'block text-xs' }, `TIN Bonificado: ${res.tinBonificado?.toFixed(2)}%`)])
@@ -112,10 +110,10 @@ const columns: TableColumn<IResultadoCalculo>[] = [
             // Coste Total y Desglose
             const breakdownItems = []
             if (res.costeTotalBonificaciones > 0 || res.desgloseGastos.total > 0) {
-                breakdownItems.push(h('li', `Capital + Intereses: ${formatearNumero(res.costeTotalConBonificar - res.costeTotalBonificaciones - res.desgloseGastos.total)}`))
-                breakdownItems.push(h('li', `Gastos Iniciales: ${formatearNumero(res.desgloseGastos.total)}`))
+                breakdownItems.push(h('li', { class: 'text-gray-500 dark:text-gray-300' }, `Capital + Intereses: ${formatearNumero(res.costeTotalConBonificar - res.costeTotalBonificaciones - res.desgloseGastos.total)}`))
+                breakdownItems.push(h('li', { class: 'text-gray-500 dark:text-gray-300' }, `Gastos Iniciales: ${formatearNumero(res.desgloseGastos.total)}`))
                 if (res.costeTotalBonificaciones > 0) {
-                    breakdownItems.push(h('li', `Coste Bonificaciones: ${formatearNumero(res.costeTotalBonificaciones)}`))
+                    breakdownItems.push(h('li', { class: 'text-gray-500 dark:text-gray-300' }, `Coste Bonificaciones: ${formatearNumero(res.costeTotalBonificaciones)}`))
                 }
             }
 
@@ -127,13 +125,13 @@ const columns: TableColumn<IResultadoCalculo>[] = [
             // Coste Total Real (Extras)
             let realCost = null
             if (res.productosPersonalesIncluidos && res.productosPersonalesIncluidos.length > 0) {
-                realCost = h('span', { class: 'text-blue-700 font-bold mt-1 block' }, [
+                realCost = h('span', { class: 'text-blue-700 dark:text-blue-300 font-bold mt-1 block bg-blue-50 dark:bg-blue-900 p-1 rounded-md' }, [
                     `Coste Total Real (con extras): ${formatearNumero(res.costeTotalConExtras || 0)}`,
                     h('br'),
-                    h('span', { class: 'text-xs font-normal' }, `(Incluye: ${res.productosPersonalesIncluidos.join(', ')})`)
+                    h('span', { class: 'text-xs text-gray-500 dark:text-gray-300 font-normal' }, `(Incluye: ${res.productosPersonalesIncluidos.join(', ')})`)
                 ])
             } else if (res.costeTotalConExtras !== res.costeTotalConBonificar) {
-                realCost = h('span', { class: 'text-blue-700 font-bold mt-1 block' },
+                realCost = h('span', { class: 'text-blue-700 dark:text-blue-300 font-bold mt-1 block bg-blue-50 dark:bg-blue-900 p-1 rounded-md' },
                     `Coste Total Real (con extras): ${formatearNumero(res.costeTotalConExtras || 0)}`
                 )
             }
@@ -147,9 +145,8 @@ const columns: TableColumn<IResultadoCalculo>[] = [
         cell: ({ row }) => {
             const res = row.original
 
-            const tae = h('strong', { class: 'block' }, `TAE: ${formatearNumero(res.taeSinBonificar, 'percent')}`)
-
-            let typeDetails = null
+            const tae = h('strong', { class: 'block text-gray-900 dark:text-white' }, `TAE: ${formatearNumero(res.taeSinBonificar, 'percent')}`) 
+                       let typeDetails = null
             if (res.oferta.tipo === 'fija') {
                 typeDetails = h('div', [h('span', { class: 'block text-xs' }, `TIN: ${res.tinInicial?.toFixed(2)}%`)])
             } else if (res.oferta.tipo === 'variable') {
@@ -177,8 +174,8 @@ const columns: TableColumn<IResultadoCalculo>[] = [
 
             const breakdownItems = []
             if (res.desgloseGastos.total > 0) {
-                breakdownItems.push(h('li', `Capital + Intereses (Sin Bonif.): ${formatearNumero(res.costeTotalSinBonificar - res.desgloseGastos.total)}`))
-                breakdownItems.push(h('li', `Gastos Iniciales: ${formatearNumero(res.desgloseGastos.total)}`))
+                breakdownItems.push(h('li', { class: 'text-gray-500 dark:text-gray-300' }, `Capital + Intereses (Sin Bonif.): ${formatearNumero(res.costeTotalSinBonificar - res.desgloseGastos.total)}`))
+                breakdownItems.push(h('li', { class: 'text-gray-500 dark:text-gray-300' }, `Gastos Iniciales: ${formatearNumero(res.desgloseGastos.total)}`))
             }
 
             const totalCost = h('div', { class: 'mt-1' }, [
@@ -199,10 +196,12 @@ const columns: TableColumn<IResultadoCalculo>[] = [
             if (res.bonificaciones.length > 0) {
                 // Crear lista de LIs
                 const lis = res.bonificaciones.map(b => {
-                    let texts = [`- ${b.nombre} ${b.isSupposed ? '(Valor supuesto)' : ''}: ${b.costeAnual > 0 ? `${formatearNumero(b.costeAnual)}/año` : 'Sin coste'}`]
-                    if (b.reduccionTin) texts.push(` -${b.reduccionTin.toFixed(2)}% TIN`)
-                    if (b.reduccionDiferencial) texts.push(` -${b.reduccionDiferencial.toFixed(2)}% Dif.`)
-                    if (b.reduccionTinFijo) texts.push(` -${b.reduccionTinFijo.toFixed(2)}% TIN Fijo`)
+                    let texts = [`- ${b.nombre}`]
+                    if (b.isSupposed) texts.push(h('span', { class: 'text-gray-500 dark:text-gray-300' }, '(Valor supuesto)'))
+                    texts.push(`: ${b.costeAnual > 0 ? `${formatearNumero(b.costeAnual)}/año` : 'Sin coste'}`)
+                    if (b.reduccionTin) texts.push(h('span', { class: 'text-gray-500 dark:text-gray-300' }, ` -${b.reduccionTin.toFixed(2)}% TIN`))
+                    if (b.reduccionDiferencial) texts.push(h('span', { class: 'text-gray-500 dark:text-gray-300' }, ` -${b.reduccionDiferencial.toFixed(2)}% Dif.`))
+                    if (b.reduccionTinFijo) texts.push(h('span', { class: 'text-gray-500 dark:text-gray-300' }, ` -${b.reduccionTinFijo.toFixed(2)}% TIN Fijo`))
 
                     return h('li', { class: b.isSupposed ? 'bg-yellow-100 rounded-md p-1 mb-1' : 'mb-1' }, texts)
                 })
@@ -243,7 +242,16 @@ const meta: TableMeta<IResultadoCalculo> = {
     <div class="table-responsive">
         <UTable :data="resultados" :columns="columns" :meta="meta" :ui="{
             td: 'whitespace-nowrap px-6 py-4 text-sm border border-gray-200',
-            base: 'border border-gray-200 border-collapse'
+            base: 'border border-gray-200 border-collapse',
+            tr: {
+                base: 'group',
+                td: {
+                    // Estilos para TD en modo claro cuando es best-choice
+                    '[.best-choice_&]': 'text-gray-900',
+                    // Estilos para TD en modo oscuro cuando es best-choice
+                    'html.dark .best-choice_&': 'text-gray-100',
+                }
+            }
         }" />
     </div>
 </template>
@@ -251,13 +259,24 @@ const meta: TableMeta<IResultadoCalculo> = {
 <style scoped>
 /* Estilos necesarios para la clase dinámica de la fila */
 :deep(.best-choice) {
-    background-color: #d1fae5 !important;
-    /* bg-emerald-100 */
+    background-color: #d1fae5 !important; /* bg-emerald-100 */
+    --tw-bg-opacity: 1;
+    background-color: rgb(209 250 229 / var(--tw-bg-opacity)) !important; /* Equivalent to bg-emerald-100 */
+}
+
+:deep(html.dark .best-choice) {
+    --tw-bg-opacity: 1;
+    background-color: rgb(6 78 59 / var(--tw-bg-opacity)) !important; /* Equivalent to bg-emerald-900 */
 }
 
 :deep(.best-choice td:first-child::before) {
     content: "⭐ ";
     font-weight: bold;
+    color: black; /* Default for light theme */
+}
+
+:deep(html.dark .best-choice td:first-child::before) {
+    color: white; /* Visible in dark theme */
 }
 
 .table-responsive {
