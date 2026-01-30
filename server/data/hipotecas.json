@@ -1,0 +1,445 @@
+
+[
+  {
+    "banco": "Hipoteca KKs",
+    "bonificaciones": [
+      {
+        "id": "seguro-vida",
+        "nombre": "Seguro de vida",
+        "costeAnual": 250,
+        "reduccionTin": 0.4,
+        "isSupposed": false,
+        "reduccionDiferencial": null,
+        "reduccionTinFijo": null
+      },
+      {
+        "id": "nomina-domiciliada",
+        "nombre": "Nómina Domiciliada",
+        "costeAnual": 0,
+        "reduccionTin": 0.45,
+        "isSupposed": false,
+        "reduccionDiferencial": null,
+        "reduccionTinFijo": null
+      },
+      {
+        "id": "plan-de-pensiones",
+        "nombre": "Plan de pensiones",
+        "costeAnual": 200,
+        "reduccionTin": 0.1,
+        "isSupposed": false,
+        "reduccionDiferencial": null,
+        "reduccionTinFijo": null
+      }
+    ],
+    "tipo": "fija",
+    "tin": 3.1,
+    "gastosAdicionales": [
+      {
+        "id": "tasacion",
+        "nombre": "Tasación",
+        "coste": 0
+      },
+      {
+        "id": "comision-broker",
+        "nombre": "Comisión Bróker",
+        "coste": 0
+      },
+      {
+        "id": "otros-gastos",
+        "nombre": "Otros Gastos",
+        "coste": 0
+      },
+      {
+        "id": "cancelacion-anterior",
+        "nombre": "Cancelación Anterior",
+        "coste": 0
+      }
+    ]
+  },
+  {
+    "banco": "Unicaja Nueva",
+    "tipo": "fija",
+    "tin": 3.1,
+    "bonificaciones": [
+      {
+        "id": "seguro-vida",
+        "nombre": "Seguro de vida",
+        "reduccionTin": 0.4,
+        "costeAnual": 369.52,
+        "isSupposed": false,
+        "reduccionDiferencial": null,
+        "reduccionTinFijo": null
+      },
+      {
+        "id": "seguro-hogar",
+        "nombre": "Seguro de hogar",
+        "reduccionTin": 0.15,
+        "costeAnual": 435.96,
+        "isSupposed": false,
+        "reduccionDiferencial": null,
+        "reduccionTinFijo": null
+      },
+      {
+        "id": "nomina-domiciliada",
+        "nombre": "Nómina Domiciliada",
+        "reduccionTin": 0.45,
+        "costeAnual": 0,
+        "isSupposed": false,
+        "reduccionDiferencial": null,
+        "reduccionTinFijo": null
+      }
+    ],
+    "gastosAdicionales": [
+      {
+        "id": "tasacion",
+        "nombre": "Tasación",
+        "coste": 600
+      },
+      {
+        "id": "comision-broker",
+        "nombre": "Comisión Bróker",
+        "coste": 1000
+      },
+      {
+        "id": "otros-gastos",
+        "nombre": "Otros Gastos",
+        "coste": 0
+      },
+      {
+        "id": "cancelacion-anterior",
+        "nombre": "Cancelación Anterior",
+        "coste": 1000
+      }
+    ]
+  },
+  {
+    "banco": "Unicaja Subrogacion",
+    "tipo": "fija",
+    "tin": 3.6,
+    "bonificaciones": [
+      {
+        "id": "seguro-vida",
+        "nombre": "Seguro de vida",
+        "reduccionTin": 0.4,
+        "costeAnual": 369.52,
+        "isSupposed": false,
+        "reduccionDiferencial": null,
+        "reduccionTinFijo": null
+      },
+      {
+        "id": "seguro-hogar",
+        "nombre": "Seguro de hogar",
+        "reduccionTin": 0.15,
+        "costeAnual": 435.96,
+        "isSupposed": false,
+        "reduccionDiferencial": null,
+        "reduccionTinFijo": null
+      },
+      {
+        "id": "nomina-domiciliada",
+        "nombre": "Nómina Domiciliada",
+        "reduccionTin": 0.45,
+        "costeAnual": 0,
+        "isSupposed": false,
+        "reduccionDiferencial": null,
+        "reduccionTinFijo": null
+      }
+    ],
+    "gastosAdicionales": [
+      {
+        "id": "tasacion",
+        "nombre": "Tasación",
+        "coste": 600
+      },
+      {
+        "id": "comision-broker",
+        "nombre": "Comisión Bróker",
+        "coste": 1000
+      },
+      {
+        "id": "otros-gastos",
+        "nombre": "Otros Gastos",
+        "coste": 0
+      },
+      {
+        "id": "cancelacion-anterior",
+        "nombre": "Cancelación Anterior",
+        "coste": 0
+      }
+    ]
+  },
+  {
+    "banco": "Banco Fijo (Bonificado Directo)",
+    "tipo": "fija",
+    "tinBonificado": 2.25,
+    "bonificaciones": [
+      {
+        "id": "nomina-domiciliada",
+        "nombre": "Nómina Domiciliada",
+        "reduccionTin": 0.75,
+        "costeAnual": 0,
+        "isSupposed": true,
+        "reduccionDiferencial": null,
+        "reduccionTinFijo": null
+      },
+      {
+        "id": "seguro-hogar",
+        "nombre": "Seguro Hogar",
+        "reduccionTin": 0.1,
+        "costeAnual": 250,
+        "isSupposed": true,
+        "reduccionDiferencial": null,
+        "reduccionTinFijo": null
+      }
+    ],
+    "gastosAdicionales": [
+      {
+        "id": "tasacion",
+        "nombre": "Tasación",
+        "coste": 600
+      },
+      {
+        "id": "comision-broker",
+        "nombre": "Comisión Bróker",
+        "coste": 0
+      },
+      {
+        "id": "otros-gastos",
+        "nombre": "Otros Gastos",
+        "coste": 0
+      },
+      {
+        "id": "cancelacion-anterior",
+        "nombre": "Cancelación Anterior",
+        "coste": 1000
+      }
+    ]
+  },
+  {
+    "banco": "Banco Variable (Bonificado Directo)",
+    "tipo": "variable",
+    "diferencialBonificado": 0.39,
+    "bonificaciones": [
+      {
+        "id": "nomina-domiciliada",
+        "nombre": "Nómina Domiciliada",
+        "reduccionDiferencial": 0.2,
+        "costeAnual": 0,
+        "isSupposed": true,
+        "reduccionTin": null,
+        "reduccionTinFijo": null
+      },
+      {
+        "id": "seguro-vida",
+        "nombre": "Seguro de vida",
+        "reduccionDiferencial": 0.15,
+        "costeAnual": 420,
+        "isSupposed": true,
+        "reduccionTin": null,
+        "reduccionTinFijo": null
+      }
+    ],
+    "gastosAdicionales": [
+      {
+        "id": "tasacion",
+        "nombre": "Tasación",
+        "coste": 0
+      },
+      {
+        "id": "comision-broker",
+        "nombre": "Comisión Bróker",
+        "coste": 2500
+      },
+      {
+        "id": "otros-gastos",
+        "nombre": "Otros Gastos",
+        "coste": 0
+      },
+      {
+        "id": "cancelacion-anterior",
+        "nombre": "Cancelación Anterior",
+        "coste": 0
+      },
+      {
+        "id": "paco",
+        "nombre": "paco",
+        "coste": 8
+      }
+    ]
+  },
+  {
+    "banco": "Caja Rural",
+    "tipo": "fija",
+    "tin": 3.3,
+    "bonificaciones": [
+      {
+        "id": "seguro-vida",
+        "nombre": "Seguro de vida",
+        "reduccionTin": 0.3,
+        "costeAnual": 373,
+        "isSupposed": false,
+        "reduccionDiferencial": null,
+        "reduccionTinFijo": null
+      },
+      {
+        "id": "seguro-hogar",
+        "nombre": "Seguro de hogar",
+        "reduccionTin": 0.15,
+        "costeAnual": 435.96,
+        "isSupposed": false,
+        "reduccionDiferencial": null,
+        "reduccionTinFijo": null
+      },
+      {
+        "id": "nomina-domiciliada",
+        "nombre": "Nómina Domiciliada",
+        "reduccionTin": 0.45,
+        "costeAnual": 0,
+        "isSupposed": false,
+        "reduccionDiferencial": null,
+        "reduccionTinFijo": null
+      }
+    ],
+    "gastosAdicionales": [
+      {
+        "id": "tasacion",
+        "nombre": "Tasación",
+        "coste": 600
+      },
+      {
+        "id": "comision-broker",
+        "nombre": "Comisión Bróker",
+        "coste": 0
+      },
+      {
+        "id": "otros-gastos",
+        "nombre": "Otros Gastos",
+        "coste": 0
+      },
+      {
+        "id": "cancelacion-anterior",
+        "nombre": "Cancelación Anterior",
+        "coste": 0
+      }
+    ]
+  },
+  {
+    "banco": "Ibercaja",
+    "tipo": "fija",
+    "tin": 3.3,
+    "bonificaciones": [
+      {
+        "id": "seguro-vida",
+        "nombre": "Seguro de vida",
+        "reduccionTin": 0.3,
+        "costeAnual": 373,
+        "isSupposed": false,
+        "reduccionDiferencial": null,
+        "reduccionTinFijo": null
+      },
+      {
+        "id": "seguro-hogar",
+        "nombre": "Seguro de hogar",
+        "reduccionTin": 0.15,
+        "costeAnual": 435.96,
+        "isSupposed": false,
+        "reduccionDiferencial": null,
+        "reduccionTinFijo": null
+      },
+      {
+        "id": "nomina-domiciliada",
+        "nombre": "Nómina Domiciliada",
+        "reduccionTin": 0.45,
+        "costeAnual": 0,
+        "isSupposed": false,
+        "reduccionDiferencial": null,
+        "reduccionTinFijo": null
+      }
+    ],
+    "gastosAdicionales": [
+      {
+        "id": "tasacion",
+        "nombre": "Tasación",
+        "coste": 600
+      },
+      {
+        "id": "comision-broker",
+        "nombre": "Comisión Bróker",
+        "coste": 0
+      },
+      {
+        "id": "otros-gastos",
+        "nombre": "Otros Gastos",
+        "coste": 0
+      },
+      {
+        "id": "cancelacion-anterior",
+        "nombre": "Cancelación Anterior",
+        "coste": 1000
+      }
+    ]
+  },
+  {
+    "banco": "Ibercaja Mixta10",
+    "bonificaciones": [
+      {
+        "id": "seguro-vida",
+        "nombre": "Seguro de vida",
+        "costeAnual": 373,
+        "reduccionTin": 0.3,
+        "isSupposed": false,
+        "reduccionDiferencial": null,
+        "reduccionTinFijo": null
+      },
+      {
+        "id": "seguro-hogar",
+        "nombre": "Seguro de hogar",
+        "costeAnual": 435.96,
+        "reduccionTin": 0.15,
+        "isSupposed": false,
+        "reduccionDiferencial": null,
+        "reduccionTinFijo": null
+      },
+      {
+        "id": "nomina-domiciliada",
+        "nombre": "Nómina Domiciliada",
+        "costeAnual": 0,
+        "reduccionTin": 0.45,
+        "isSupposed": false,
+        "reduccionDiferencial": null,
+        "reduccionTinFijo": null
+      }
+    ],
+    "tipo": "mixta",
+    "plazoFijoAnios": 10,
+    "tinFijoBonificado": 1.6,
+    "diferencialBonificado": 0.6,
+    "gastosAdicionales": [
+      {
+        "id": "tasacion",
+        "nombre": "Tasación",
+        "coste": 600
+      },
+      {
+        "id": "comision-broker",
+        "nombre": "Comisión Bróker",
+        "coste": 0
+      },
+      {
+        "id": "otros-gastos",
+        "nombre": "Otros Gastos",
+        "coste": 0
+      },
+      {
+        "id": "cancelacion-anterior",
+        "nombre": "Cancelación Anterior",
+        "coste": 1000
+      },
+      {
+        "id": "ddd",
+        "nombre": "ddd",
+        "coste": 0
+      }
+    ]
+  }
+]

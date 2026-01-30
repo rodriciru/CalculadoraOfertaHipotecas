@@ -1,4 +1,5 @@
 export interface IBonificacion {
+  id?: number | string; // Identificación única
   nombre: string;
   reduccionTin?: number;
   reduccionDiferencial?: number;
@@ -7,13 +8,16 @@ export interface IBonificacion {
   isSupposed?: boolean;
 }
 
+export interface IGasto {
+  id?: number | string;
+  nombre: string;
+  coste: number;
+}
+
 export interface IOfertaBase {
   banco: string;
-  gastosTasacion: number;
-  comisionBroker: number;
-  otrosGastos: number;
-  gastosCancelacionAnterior?: number;
-  bonificaciones: IBonificacion[];
+  gastosAdicionales: IGasto[];
+  bonificaciones: IBonificacion[]; // Usar IBonificacion
 }
 
 export interface IOfertaFija extends IOfertaBase {
@@ -57,13 +61,10 @@ export interface IResultadoCalculo {
   costeTotalSinBonificar: number;
   costeTotalConBonificar: number;
   costeTotalBonificaciones: number;
-  bonificaciones: IBonificacion[];
+  bonificaciones: IBonificacion[]; // Usar IBonificacion
   desgloseGastos: {
-      tasacion: number;
-      broker: number;
-      otros: number;
-      cancelacionAnterior: number;
       total: number;
+      detalles?: IGasto[];
   };
   oferta: OfertaHipotecaTipo;
   tinInicial?: number;

@@ -19,7 +19,7 @@
 
     <!-- Productos Personales Adicionales -->
     <div class="mb-8 p-6 rounded-lg shadow-sm">
-      <h2 class="text-xl font-bold  mb-4">Productos Personales Adicionales (no bonificables)</h2>
+      <h2 class="text-xl font-bold  mb-4">Bonificaciones Personales Adicionales (no bonificables)</h2>
       <p class="mb-4">Selecciona y añade productos que contratarías por tu cuenta. Su coste anual se
         sumará
         al coste total de las ofertas de hipotecas que no los incluyan como bonificación.</p>
@@ -29,7 +29,7 @@
 
       <div class="flex flex-wrap items-center gap-4 mt-6 p-4 border-t pt-4">
         <div class="flex-grow">
-          <USelect v-model="nuevoBonusSeleccionado" :options="productosPersonalesPredefinidos.map(b => b.nombre)" />
+          <USelect v-model="nuevoBonusSeleccionado" :items="bonificacionesPersonales.map(b => b.nombre)" />
         </div>
         <div class="w-32">
           <UInput type="number" v-model.number="costoNuevoBonus" step="10" min="0" placeholder="Coste Anual (€)" />
@@ -55,7 +55,7 @@ const plazo = ref(27);
 const euribor = ref(3.5);
 const ofertasHipotecas = ref<OfertaHipotecaTipo[]>([]);
 const personalBonificaciones = ref<IProductoPersonal[]>([]);
-const productosPersonalesPredefinidos = ref<IProductoPersonal[]>([]);
+const bonificacionesPersonales = ref<IProductoPersonal[]>([]);
 const nuevoBonusSeleccionado = ref<string>('');
 const costoNuevoBonus = ref<number>(0);
 const resultados = ref<IResultadoCalculo[]>([]);
@@ -68,18 +68,18 @@ const mejorOpcionCosteTotal = computed(() => {
 });
 
 watch(nuevoBonusSeleccionado, (newValue) => {
-  const selectedBonus = productosPersonalesPredefinidos.value.find(b => b.nombre === newValue);
+  const selectedBonus = bonificacionesPersonales.value.find(b => b.nombre === newValue);
   if (selectedBonus) {
     costoNuevoBonus.value = selectedBonus.costeAnual;
   }
 });
 
-async function loadPredefinedPersonalBonuses() {
+async function cargarBonificacionesPersonales() {
   try {
-    const data = await $fetch<IProductoPersonal[]>('/personalProducts.json');
-    productosPersonalesPredefinidos.value = data;
-    if (productosPersonalesPredefinidos.value.length > 0) {
-      nuevoBonusSeleccionado.value = productosPersonalesPredefinidos.value[0].nombre;
+    const data = await $fetch<IProductoPersonal[]>('/api/bonificaciones');
+    bonificacionesPersonales.value = data;
+    if (bonificacionesPersonales.value.length > 0) {
+      nuevoBonusSeleccionado.value = bonificacionesPersonales.value[0].nombre;
     }
   } catch (error) {
     console.error('Error al cargar los productos personales predefinidos:', error);
@@ -171,6 +171,6 @@ function actualizarCosteBonificacionPersonal(id: number, cost: number) {
 
 onMounted(() => {
   cargarOfertas();
-  loadPredefinedPersonalBonuses();
+  cargarBonificacionesPersonales();
 });
 </script>

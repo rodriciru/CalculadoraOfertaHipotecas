@@ -182,9 +182,14 @@ export class CalculadoraHipoteca {
         return [];
     }
 
+    static sumGastos(gastos: IGasto[] | undefined): number {
+        return gastos?.reduce((acc, gasto) => acc + (gasto.coste || 0), 0) || 0;
+    }
+
     static calcularResultadoParaOferta(oferta: OfertaHipotecaTipo, importe: number, plazoAnios: number, euribor: number, personalBonificaciones: IPersonalBonus[]): IResultadoCalculo {
-        const gastosParaTAE = (oferta.gastosTasacion || 0) + (oferta.otrosGastos || 0);
-        const gastosTotalesReales = gastosParaTAE + (oferta.comisionBroker || 0) + (oferta.gastosCancelacionAnterior || 0);
+        const gastosTotalesReales = this.sumGastos(oferta.gastosAdicionales);
+        // Por simplicidad, asumimos que todos los gastos adicionales son para el TAE
+        const gastosParaTAE = gastosTotalesReales;
         const plazoMeses = plazoAnios * 12;
 
         const baseRateInfoSinBonif = this.obtenerInteresMensual(oferta, euribor, false, 1);
@@ -268,11 +273,8 @@ export class CalculadoraHipoteca {
             costeTotalBonificaciones,
             bonificaciones: oferta.bonificaciones,
             desgloseGastos: {
-                tasacion: oferta.gastosTasacion || 0,
-                broker: oferta.comisionBroker || 0,
-                otros: oferta.otrosGastos || 0,
-                cancelacionAnterior: oferta.gastosCancelacionAnterior || 0,
-                total: gastosTotalesReales
+                total: gastosTotalesReales,
+                detalles: oferta.gastosAdicionales || [],
             },
             oferta: oferta,
             tinInicial,

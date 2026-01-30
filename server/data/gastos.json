@@ -1,0 +1,32 @@
+[
+  {
+    "id": "tasacion",
+    "nombre": "Tasación",
+    "coste": 300
+  },
+  {
+    "id": "comision-apertura",
+    "nombre": "Comisión de Apertura",
+    "coste": 500
+  },
+  {
+    "id": "gastos-notaria",
+    "nombre": "Gastos de Notaría",
+    "coste": 800
+  },
+  {
+    "id": "gestoria",
+    "nombre": "Gestoría",
+    "coste": 350
+  },
+  {
+    "id": "registro-propiedad",
+    "nombre": "Registro de la Propiedad",
+    "coste": 200
+  },
+  {
+    "id": "impuesto-ajd",
+    "nombre": "Impuesto de Actos Jurídicos Documentados",
+    "coste": 0
+  }
+]

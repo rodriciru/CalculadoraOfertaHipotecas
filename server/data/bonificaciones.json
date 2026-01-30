@@ -1,0 +1,22 @@
+[
+  {
+    "id": "seguro-vida",
+    "nombre": "Seguro de vida"
+  },
+  {
+    "id": "seguro-hogar",
+    "nombre": "Seguro de hogar"
+  },
+  {
+    "id": "nomina-domiciliada",
+    "nombre": "Nómina Domiciliada"
+  },
+  {
+    "id": "tarjeta-credito",
+    "nombre": "Uso de Tarjeta de Crédito"
+  },
+  {
+    "id": "plan-de-pensiones",
+    "nombre": "Plan de pensiones"
+  }
+]

@@ -61,12 +61,11 @@ const columns: TableColumn<IResultadoCalculo>[] = [
             // 3. Lista de gastos
             const expenses = h('div', { class: 'mt-2 text-xs' }, [
                 h('strong', `Gastos Iniciales: ${formatearNumero(res.desgloseGastos.total)}`),
-                h('ul', { class: 'list-disc list-inside ml-2' }, [
-                    h('li', { class: 'text-gray-500 dark:text-gray-300' }, `Tasación: ${formatearNumero(res.desgloseGastos.tasacion)}`),
-                    h('li', { class: 'text-gray-500 dark:text-gray-300' }, `Bróker: ${formatearNumero(res.desgloseGastos.broker)}`),
-                    h('li', { class: 'text-gray-500 dark:text-gray-300' }, `Otros: ${formatearNumero(res.desgloseGastos.otros)}`),
-                    h('li', { class: 'text-gray-500 dark:text-gray-300' }, `Cancelación Anterior: ${formatearNumero(res.desgloseGastos.cancelacionAnterior)}`),
-                ])
+                res.desgloseGastos.detalles && res.desgloseGastos.detalles.length > 0
+                    ? h('ul', { class: 'list-disc list-inside ml-2' },
+                        res.desgloseGastos.detalles.map(g => h('li', { class: 'text-gray-500 dark:text-gray-300' }, `${g.nombre}: ${formatearNumero(g.coste)}`))
+                    )
+                    : h('p', { class: 'text-gray-500 dark:text-gray-300 italic' }, 'Sin gastos adicionales.')
             ])
 
             return h('div', { class: 'whitespace-normal' }, [header, rateDetails, expenses])

@@ -11,8 +11,8 @@ useHead({
   }
 })
 
-const title = 'HipoTop - Tu Comparador de Hipotecas'
-const description = 'Compara las mejores ofertas de hipotecas en un solo lugar. Encuentra la hipoteca ideal, con o sin bonificaciones, y toma la mejor decisión financiera con HipoTop.'
+const title = 'HipoTop - Encuentra la Mejor Opción para Ti'
+const description = 'Compara ofertas de hipotecas de diferentes bancos, calcula cuotas, TAE y costes totales. Encuentra la hipoteca ideal con o sin bonificaciones.'
 
 useSeoMeta({
   title,
@@ -38,6 +38,14 @@ useSeoMeta({
 
       <template #right>
         <UColorModeButton />
+
+        <UButton
+          to="/generador"
+          icon="i-heroicons-beaker"
+          aria-label="Generador de los datos"
+          color="neutral"
+          variant="ghost"
+        />
       </template>
     </UHeader>
 
