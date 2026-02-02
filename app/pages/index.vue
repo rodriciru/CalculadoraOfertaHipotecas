@@ -59,7 +59,7 @@
         <div class="flex-grow">
           <USelect
             v-model="nuevoBonusSeleccionado"
-            :items="bonificacionesPersonales.map(b => b.nombre)"
+            :items="bonificacionesCatalogo.map(b => b.nombre)"
           />
         </div>
         <div class="w-32">
@@ -102,7 +102,7 @@ const plazo = ref(27)
 const euribor = ref(3.5)
 const ofertasHipotecas = ref<OfertaHipotecaTipo[]>([])
 const personalBonificaciones = ref<IProductoPersonal[]>([])
-const bonificacionesPersonales = ref<IProductoPersonal[]>([])
+const bonificacionesCatalogo = ref<IProductoPersonal[]>([])
 const nuevoBonusSeleccionado = ref<string>('')
 const costoNuevoBonus = ref<number>(0)
 const resultados = ref<IResultadoCalculo[]>([])
@@ -115,21 +115,30 @@ const mejorOpcionCosteTotal = computed(() => {
 })
 
 watch(nuevoBonusSeleccionado, (newValue) => {
-  const selectedBonus = bonificacionesPersonales.value.find(b => b.nombre === newValue)
+  const selectedBonus = bonificacionesCatalogo.value.find(b => b.nombre === newValue)
   if (selectedBonus) {
     costoNuevoBonus.value = selectedBonus.costeAnual
   }
 })
 
-async function cargarBonificacionesPersonales() {
+async function loadBonificacionesCatalogo() {
   try {
     const data = await $fetch<IProductoPersonal[]>('/api/bonificaciones')
-    bonificacionesPersonales.value = data
-    if (bonificacionesPersonales.value.length > 0) {
-      nuevoBonusSeleccionado.value = bonificacionesPersonales.value[0].nombre
+    bonificacionesCatalogo.value = data
+    if (bonificacionesCatalogo.value.length > 0) {
+      nuevoBonusSeleccionado.value = bonificacionesCatalogo.value[0].nombre
     }
   } catch (error) {
     console.error('Error al cargar los productos personales predefinidos:', error)
+  }
+}
+
+async function loadPersonalBonuses() {
+  try {
+    const data = await $fetch<IProductoPersonal[]>('/api/bonificacionesPersonales')
+    personalBonificaciones.value = data
+  } catch (error) {
+    console.error('Error al cargar las bonificaciones personales:', error)
   }
 }
 
@@ -168,32 +177,51 @@ function mostrarGrafico(resultado: IResultadoCalculo) {
   isModalOpen.value = true
 }
 
+async function savePersonalBonuses() {
+  try {
+    await $fetch('/api/bonificacionesPersonales', {
+      method: 'POST',
+      body: personalBonificaciones.value
+    })
+  } catch (error) {
+    console.error('Error al guardar las bonificaciones personales:', error)
+  }
+}
+
 function addPersonalBonus() {
   const name = nuevoBonusSeleccionado.value
   const cost = costoNuevoBonus.value
+  const selectedBonusFromCatalog = bonificacionesCatalogo.value.find(b => b.nombre === name)
 
-  if (!name || isNaN(cost) || cost < 0) {
-    alert('Por favor, selecciona un producto y/o introduce un coste anual válido.')
+  if (!selectedBonusFromCatalog) {
+    alert('Por favor, selecciona un producto válido del catálogo.')
     return
   }
 
-  if (personalBonificaciones.value.some(b => b.nombre === name)) {
+  if (isNaN(cost) || cost < 0) {
+    alert('Por favor, introduce un coste anual válido.')
+    return
+  }
+
+  if (personalBonificaciones.value.some(b => b.id === selectedBonusFromCatalog.id)) {
     alert(`El producto '${name}' ya ha sido añadido.`)
     return
   }
 
   const newBonus: IProductoPersonal = {
-    id: Date.now(),
+    id: selectedBonusFromCatalog.id, // Usar el ID original del catálogo
     nombre: name,
     costeAnual: cost,
     enabled: true
   }
   personalBonificaciones.value.push(newBonus)
+  savePersonalBonuses()
   calcularComparativa()
 }
 
 function eliminarBonificacionPersonal(id: number) {
   personalBonificaciones.value = personalBonificaciones.value.filter(bonus => bonus.id !== id)
+  savePersonalBonuses()
   calcularComparativa()
 }
 
@@ -209,12 +237,16 @@ function actualizarCosteBonificacionPersonal(id: number, cost: number) {
   const bonus = personalBonificaciones.value.find(b => b.id === id)
   if (bonus) {
     bonus.costeAnual = cost
+    savePersonalBonuses()
     calcularComparativa()
   }
 }
 
+watch(personalBonificaciones, savePersonalBonuses, { deep: true })
+
 onMounted(() => {
   cargarOfertas()
-  cargarBonificacionesPersonales()
+  loadPersonalBonuses()
+  loadBonificacionesCatalogo()
 })
 </script>
