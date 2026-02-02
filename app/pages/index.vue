@@ -84,6 +84,7 @@
       :resultados="resultados"
       :mejor-opcion-coste-total="mejorOpcionCosteTotal"
       @ver-grafico="mostrarGrafico"
+      @alternar-bonificacion="alternarBonificacion"
     />
 
     <GraficoAmortizacion
@@ -145,7 +146,10 @@ async function loadBonificacionesPersonalesAdiciones() {
 async function cargarOfertas() {
   try {
     const response = await $fetch<OfertaHipotecaTipo[]>('/api/hipotecas')
-    ofertasHipotecas.value = response
+    ofertasHipotecas.value = response.map(oferta => ({
+      ...oferta,
+      bonificaciones: oferta.bonificaciones.map(b => ({ ...b, enabled: true }))
+    }))
     calcularComparativa()
   } catch (error) {
     console.error('Error al cargar las ofertas de hipotecas:', error)
@@ -170,6 +174,17 @@ function calcularComparativa() {
       bonificacionesPersonalesAdiciones.value
     ))
   })
+}
+
+function alternarBonificacion({ hipotecaId, bonificacionId }: { hipotecaId: number | string, bonificacionId: number | string }) {
+  const oferta = ofertasHipotecas.value.find(o => o.id === hipotecaId)
+  if (oferta) {
+    const bonus = oferta.bonificaciones.find(b => b.id === bonificacionId)
+    if (bonus) {
+      bonus.enabled = !bonus.enabled
+      calcularComparativa()
+    }
+  }
 }
 
 function mostrarGrafico(resultado: IResultadoCalculo) {

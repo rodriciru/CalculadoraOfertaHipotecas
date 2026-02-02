@@ -6,6 +6,7 @@ export interface IBonificacion {
   reduccionTinFijo?: number
   costeAnual: number
   isSupposed?: boolean
+  enabled?: boolean
 }
 
 export interface IGasto {

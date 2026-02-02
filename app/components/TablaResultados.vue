@@ -190,19 +190,35 @@ const columns: TableColumn<IResultadoCalculo>[] = [
     header: 'Detalle Bonificaciones',
     cell: ({ row }) => {
       const res = row.original
-      let content = null
+      const UCheckbox = resolveComponent('UCheckbox')
+
+      let content: VNode | VNode[] | null = null
 
       if (res.bonificaciones.length > 0) {
-        // Crear lista de LIs
+        // Mapeamos a un array de VNodes
         const lis = res.bonificaciones.map((b) => {
-          const texts: (string | VNode)[] = [`- ${b.nombre}`]
-          if (b.isSupposed) texts.push(h('span', { class: 'text-gray-500 dark:text-gray-300' }, '(Valor supuesto)'))
-          texts.push(`: ${b.costeAnual > 0 ? `${formatearNumero(b.costeAnual)}/año` : 'Sin coste'}`)
-          if (b.reduccionTin) texts.push(h('span', { class: 'text-gray-500 dark:text-gray-300' }, ` -${b.reduccionTin.toFixed(2)}% TIN`))
-          if (b.reduccionDiferencial) texts.push(h('span', { class: 'text-gray-500 dark:text-gray-300' }, ` -${b.reduccionDiferencial.toFixed(2)}% Dif.`))
-          if (b.reduccionTinFijo) texts.push(h('span', { class: 'text-gray-500 dark:text-gray-300' }, ` -${b.reduccionTinFijo.toFixed(2)}% TIN Fijo`))
+          // Checkbox
+          const checkbox = h(UCheckbox, {
+            modelValue: b.enabled, // Enlazamos al estado
+            onChange: () => {
+              emit('alternarBonificacion', { hipotecaId: res.oferta.id, bonificacionId: b.id })
+            }
+          })
 
-          return h('li', { class: b.isSupposed ? 'bg-yellow-100 rounded-md p-1 mb-1' : 'mb-1' }, texts)
+          // Textos
+          const texts: (string | VNode)[] = [b.nombre]
+          if (b.isSupposed) texts.push(h('span', { class: 'text-gray-500' }, '(S)'))
+          texts.push(`: ${b.costeAnual > 0 ? `${formatearNumero(b.costeAnual)}/año` : 'Sin coste'}`)
+          if (b.reduccionTin) texts.push(h('span', { class: 'text-gray-500' }, ` -${b.reduccionTin.toFixed(2)}% TIN`))
+          if (b.reduccionDiferencial) texts.push(h('span', { class: 'text-gray-500' }, ` -${b.reduccionDiferencial.toFixed(2)}% Dif.`))
+          if (b.reduccionTinFijo) texts.push(h('span', { class: 'text-gray-500' }, ` -${b.reduccionTinFijo.toFixed(2)}% TIN Fijo`))
+
+          const label = h('label', { class: 'ml-2 flex-grow' }, texts)
+
+          // Contenedor Flex para alinear checkbox y texto
+          const flexContainer = h('div', { class: 'flex items-center' }, [checkbox, label])
+
+          return h('li', { class: `mb-1 ${!b.enabled ? 'opacity-50' : ''} ${b.isSupposed ? 'bg-yellow-100' : ''}` }, [flexContainer])
         })
         content = h('ul', { class: 'list-none p-0 m-0 text-sm' }, lis)
       } else {

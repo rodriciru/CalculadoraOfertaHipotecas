@@ -27,50 +27,58 @@ export function obtenerInteresMensual(oferta: OfertaHipotecaTipo, euribor: numbe
     }, 0)
   }
 
+  const bonificacionesActivas = oferta.bonificaciones.filter(b => b.enabled !== false)
+
   switch (oferta.tipo) {
-    case 'fija':
-      totalReduccion = sumReductions(oferta.bonificaciones, 'tin')
+    case 'fija': {
+      const reduccionInferencia = sumReductions(oferta.bonificaciones, 'tin')
+      totalReduccion = sumReductions(bonificacionesActivas, 'tin')
       if (oferta.tin !== undefined) {
         baseRate = oferta.tin
       } else if (oferta.tinBonificado !== undefined) {
-        baseRate = oferta.tinBonificado + totalReduccion
+        baseRate = oferta.tinBonificado + reduccionInferencia
         isAssumedBase = true
       } else {
         baseRate = 0
         isAssumedBase = true
       }
       break
-    case 'variable':
-      totalReduccion = sumReductions(oferta.bonificaciones, 'diferencial')
+    }
+    case 'variable': {
+      const reduccionInferencia = sumReductions(oferta.bonificaciones, 'diferencial')
+      totalReduccion = sumReductions(bonificacionesActivas, 'diferencial')
       if (oferta.diferencial !== undefined) {
         baseRate = euribor + oferta.diferencial
       } else if (oferta.diferencialBonificado !== undefined) {
-        baseRate = euribor + oferta.diferencialBonificado + totalReduccion
+        baseRate = euribor + oferta.diferencialBonificado + reduccionInferencia
         isAssumedBase = true
       } else {
         baseRate = euribor
         isAssumedBase = true
       }
       break
-    case 'mixta':{
+    }
+    case 'mixta': {
       const plazoFijoMeses = oferta.plazoFijoAnios * 12
       if (mesActual <= plazoFijoMeses) {
-        totalReduccion = sumReductions(oferta.bonificaciones, 'tinFijo')
+        const reduccionInferencia = sumReductions(oferta.bonificaciones, 'tinFijo')
+        totalReduccion = sumReductions(bonificacionesActivas, 'tinFijo')
         if (oferta.tinFijo !== undefined) {
           baseRate = oferta.tinFijo
         } else if (oferta.tinFijoBonificado !== undefined) {
-          baseRate = oferta.tinFijoBonificado + totalReduccion
+          baseRate = oferta.tinFijoBonificado + reduccionInferencia
           isAssumedBase = true
         } else {
           baseRate = 0
           isAssumedBase = true
         }
       } else {
-        totalReduccion = sumReductions(oferta.bonificaciones, 'diferencial')
+        const reduccionInferencia = sumReductions(oferta.bonificaciones, 'diferencial')
+        totalReduccion = sumReductions(bonificacionesActivas, 'diferencial')
         if (oferta.diferencial !== undefined) {
           baseRate = euribor + oferta.diferencial
         } else if (oferta.diferencialBonificado !== undefined) {
-          baseRate = euribor + oferta.diferencialBonificado + totalReduccion
+          baseRate = euribor + oferta.diferencialBonificado + reduccionInferencia
           isAssumedBase = true
         } else {
           baseRate = euribor
@@ -205,7 +213,7 @@ export function calcularResultadoParaOferta(oferta: OfertaHipotecaTipo, importe:
   const taeSinBonificar = calcularTAE(importe, plazoMeses, gastosParaTAE, cuotasSinBonificar, 0)
 
   const cuotasConBonificar = calcularFlujoDeCuotas(oferta, importe, plazoMeses, euribor, true)
-  const costeTotalBonificaciones = oferta.bonificaciones.reduce((acc, b) => acc + (b.costeAnual || 0), 0) * plazoAnios
+  const costeTotalBonificaciones = oferta.bonificaciones.filter(b => b.enabled !== false).reduce((acc, b) => acc + (b.costeAnual || 0), 0) * plazoAnios
   const costeTotalPagadoConBonificar = cuotasConBonificar.reduce((acc, cuota) => acc + cuota, 0)
   const costeTotalConBonificar = costeTotalPagadoConBonificar + gastosTotalesReales + costeTotalBonificaciones
   const taeConBonificar = calcularTAE(importe, plazoMeses, gastosParaTAE, cuotasConBonificar, costeTotalBonificaciones / plazoMeses)
