@@ -442,6 +442,15 @@ onMounted(() => {
   loadGastos()
   loadBonificacionesCatalogo() // Nueva llamada para cargar bonificaciones
 })
+
+function setNumericValue(value: string | number, updater: (val: number | undefined) => void) {
+  if (value === '' || value === null) {
+    updater(undefined)
+    return
+  }
+  const parsed = parseFloat(String(value))
+  updater(isNaN(parsed) ? undefined : parsed)
+}
 </script>
 
 <template>
@@ -530,16 +539,18 @@ onMounted(() => {
             >
               <UFormField label="TIN Base %">
                 <UInput
-                  v-model.number="editor.data.tin"
+                  v-model="editor.data.tin"
                   type="number"
                   step="0.05"
+                  @update:model-value="val => setNumericValue(val, v => editor.data.tin = v)"
                 />
               </UFormField>
               <UFormField label="TIN Bonificado %">
                 <UInput
-                  v-model.number="editor.data.tinBonificado"
+                  v-model="editor.data.tinBonificado"
                   type="number"
                   step="0.05"
+                  @update:model-value="val => setNumericValue(val, v => editor.data.tinBonificado = v)"
                 />
               </UFormField>
             </div>
@@ -551,16 +562,18 @@ onMounted(() => {
             >
               <UFormField label="Diferencial Base %">
                 <UInput
-                  v-model.number="editor.data.diferencial"
+                  v-model="editor.data.diferencial"
                   type="number"
                   step="0.05"
+                  @update:model-value="val => setNumericValue(val, v => editor.data.diferencial = v)"
                 />
               </UFormField>
               <UFormField label="Diferencial Bonificado %">
                 <UInput
-                  v-model.number="editor.data.diferencialBonificado"
+                  v-model="editor.data.diferencialBonificado"
                   type="number"
                   step="0.05"
+                  @update:model-value="val => setNumericValue(val, v => editor.data.diferencialBonificado = v)"
                 />
               </UFormField>
             </div>
@@ -573,38 +586,43 @@ onMounted(() => {
               <div class="grid grid-cols-3 gap-3">
                 <UFormField label="Años Fijos">
                   <UInput
-                    v-model.number="editor.data.plazoFijoAnios"
+                    v-model="editor.data.plazoFijoAnios"
                     type="number"
+                    @update:model-value="val => setNumericValue(val, v => editor.data.plazoFijoAnios = v)"
                   />
                 </UFormField>
                 <UFormField label="TIN Fijo %">
                   <UInput
-                    v-model.number="editor.data.tinFijo"
+                    v-model="editor.data.tinFijo"
                     type="number"
                     step="0.05"
+                    @update:model-value="val => setNumericValue(val, v => editor.data.tinFijo = v)"
                   />
                 </UFormField>
                 <UFormField label="TIN Fijo Bonif. %">
                   <UInput
-                    v-model.number="editor.data.tinFijoBonificado"
+                    v-model="editor.data.tinFijoBonificado"
                     type="number"
                     step="0.05"
+                    @update:model-value="val => setNumericValue(val, v => editor.data.tinFijoBonificado = v)"
                   />
                 </UFormField>
               </div>
               <div class="grid grid-cols-2 gap-4 pt-2 border-t border-gray-200">
                 <UFormField label="Diferencial Variable %">
                   <UInput
-                    v-model.number="editor.data.diferencial"
+                    v-model="editor.data.diferencial"
                     type="number"
                     step="0.05"
+                    @update:model-value="val => setNumericValue(val, v => editor.data.diferencial = v)"
                   />
                 </UFormField>
                 <UFormField label="Dif. Variable Bonif. %">
                   <UInput
-                    v-model.number="editor.data.diferencialBonificado"
+                    v-model="editor.data.diferencialBonificado"
                     type="number"
                     step="0.05"
+                    @update:model-value="val => setNumericValue(val, v => editor.data.diferencialBonificado = v)"
                   />
                 </UFormField>
               </div>
@@ -633,11 +651,12 @@ onMounted(() => {
                 size="sm"
               />
               <UInput
-                v-model.number="costoNuevoGasto"
+                v-model="costoNuevoGasto"
                 type="number"
                 placeholder="Coste (€)"
                 class="w-24"
                 size="sm"
+                @update:model-value="val => setNumericValue(val, v => costoNuevoGasto = v)"
               />
               <UButton
                 icon="i-heroicons-plus"
@@ -662,11 +681,12 @@ onMounted(() => {
                   size="sm"
                 />
                 <UInput
-                  v-model.number="nuevoGastoPersonalizadoCoste"
+                  v-model="nuevoGastoPersonalizadoCoste"
                   type="number"
                   placeholder="Coste (€)"
                   class="w-24"
                   size="sm"
+                  @update:model-value="val => setNumericValue(val, v => nuevoGastoPersonalizadoCoste = v)"
                 />
                 <UButton
                   icon="i-heroicons-plus"
@@ -695,11 +715,12 @@ onMounted(() => {
                   size="sm"
                 />
                 <UInput
-                  v-model.number="gasto.coste"
+                  v-model="gasto.coste"
                   placeholder="Coste €"
                   class="w-24"
                   type="number"
                   size="sm"
+                  @update:model-value="val => setNumericValue(val, v => gasto.coste = v)"
                 />
                 <UButton
                   icon="i-heroicons-trash"
@@ -744,34 +765,38 @@ onMounted(() => {
               <div class="grid grid-cols-2 gap-2 mb-2">
                 <UFormField label="Coste Anual (€)">
                   <UInput
-                    v-model.number="costoBonificacionAAnadir"
+                    v-model="costoBonificacionAAnadir"
                     type="number"
                     step="10"
                     size="sm"
+                    @update:model-value="val => setNumericValue(val, v => costoBonificacionAAnadir = v)"
                   />
                 </UFormField>
                 <UFormField label="Red. TIN (%)">
                   <UInput
-                    v-model.number="reduccionTinBonificacionAAnadir"
+                    v-model="reduccionTinBonificacionAAnadir"
                     type="number"
                     step="0.01"
                     size="sm"
+                    @update:model-value="val => setNumericValue(val, v => reduccionTinBonificacionAAnadir = v)"
                   />
                 </UFormField>
                 <UFormField label="Red. Diferencial (%)">
                   <UInput
-                    v-model.number="reduccionDiferencialBonificacionAAnadir"
+                    v-model="reduccionDiferencialBonificacionAAnadir"
                     type="number"
                     step="0.01"
                     size="sm"
+                    @update:model-value="val => setNumericValue(val, v => reduccionDiferencialBonificacionAAnadir = v)"
                   />
                 </UFormField>
                 <UFormField label="Red. TIN Fijo (%)">
                   <UInput
-                    v-model.number="reduccionTinFijoBonificacionAAnadir"
+                    v-model="reduccionTinFijoBonificacionAAnadir"
                     type="number"
                     step="0.01"
                     size="sm"
+                    @update:model-value="val => setNumericValue(val, v => reduccionTinFijoBonificacionAAnadir = v)"
                   />
                 </UFormField>
               </div>
@@ -808,34 +833,38 @@ onMounted(() => {
               <div class="grid grid-cols-2 gap-2 mb-2">
                 <UFormField label="Coste Anual (€)">
                   <UInput
-                    v-model.number="costeAnualBonificacionPersonalizada"
+                    v-model="costeAnualBonificacionPersonalizada"
                     type="number"
                     step="10"
                     size="sm"
+                    @update:model-value="val => setNumericValue(val, v => costeAnualBonificacionPersonalizada = v)"
                   />
                 </UFormField>
                 <UFormField label="Red. TIN (%)">
                   <UInput
-                    v-model.number="reduccionTinBonificacionPersonalizada"
+                    v-model="reduccionTinBonificacionPersonalizada"
                     type="number"
                     step="0.01"
                     size="sm"
+                    @update:model-value="val => setNumericValue(val, v => reduccionTinBonificacionPersonalizada = v)"
                   />
                 </UFormField>
                 <UFormField label="Red. Diferencial (%)">
                   <UInput
-                    v-model.number="reduccionDiferencialBonificacionPersonalizada"
+                    v-model="reduccionDiferencialBonificacionPersonalizada"
                     type="number"
                     step="0.01"
                     size="sm"
+                    @update:model-value="val => setNumericValue(val, v => reduccionDiferencialBonificacionPersonalizada = v)"
                   />
                 </UFormField>
                 <UFormField label="Red. TIN Fijo (%)">
                   <UInput
-                    v-model.number="reduccionTinFijoBonificacionPersonalizada"
+                    v-model="reduccionTinFijoBonificacionPersonalizada"
                     type="number"
                     step="0.01"
                     size="sm"
+                    @update:model-value="val => setNumericValue(val, v => reduccionTinFijoBonificacionPersonalizada = v)"
                   />
                 </UFormField>
               </div>
