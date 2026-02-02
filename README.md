@@ -1,183 +1,66 @@
-# Comparador de Hipotecas Avanzado
+Una aplicación web moderna y reactiva para analizar y comparar ofertas de hipotecas de tipo fijo, variable y mixto. Construida con Nuxt 4 y Vue 3, esta herramienta permite una simulación detallada y en tiempo real del coste total de un préstamo hipotecario.
 
-Este proyecto es una herramienta web local para comparar ofertas de hipotecas de tipo fijo, variable y mixto. Calcula y compara el **Coste Total** y la **TAE (Tasa Anual Equivalente)** efectiva para proporcionar una visión precisa del coste real de cada préstamo.
+## Características Clave
 
-La interfaz está construida con **Tailwind CSS** y la lógica de cálculo está escrita en **TypeScript** para mayor robustez y mantenibilidad.
+-   **Análisis Completo:** Calcula y compara la **TAE**, **cuotas mensuales** y el **coste total** a lo largo de la vida del préstamo.
+-   **Interfaz Reactiva:** Cualquier cambio en los parámetros (importe, plazo, Euríbor) o en la selección de bonificaciones se refleja **instantáneamente** en los resultados, sin necesidad de recargar ni pulsar botones.
+-   **Bonificaciones Configurables:** Permite activar o desactivar cada bonificación de una oferta para simular cómo afecta al coste total y decidir si compensa contratarla.
+-   **Comparación Inteligente:** Destaca visualmente la oferta más económica basándose en el "Coste Total Real", que incluye tanto las bonificaciones de la hipoteca como los productos adicionales que el usuario contrataría por su cuenta.
+-   **Soporte Multi-tipo:** Analiza y compara hipotecas `fijas`, `variables` y `mixtas`.
+-   **Gráficos Interactivos:** Visualiza el cuadro de amortización de cada oferta.
+-   **Generación Dinámica de Ofertas:** Utiliza la ruta `/generador` para crear y exportar nuevas ofertas de hipotecas en formato JSON, facilitando la expansión del catálogo de forma interactiva.
+-   **API Propia:** Gestiona los datos de las ofertas (hipotecas, gastos, bonificaciones) a través de una API interna de Nuxt, facilitando su mantenimiento y escalabilidad.
 
-## Características
+## Stack Tecnológico
 
--   **Comparación Precisa:** Utiliza la TAE para comparar diferentes tipos de ofertas.
--   **Soporte Multi-tipo:** Analiza hipotecas de tipo `fijo`, `variable` y `mixto`.
--   **Bonificaciones Detalladas:** Contempla el coste y la reducción de interés de productos vinculados (seguros, nóminas, etc.).
--   **Interfaz Moderna:** Diseño limpio y responsive gracias a Tailwind CSS.
--   **Datos Externos:** Las ofertas de hipotecas se gestionan fácilmente en un archivo `hipotecas.json`.
--   **Entorno de Desarrollo Moderno:** Usa TypeScript para un código más seguro y `pnpm` para una gestión de paquetes eficiente.
-
----
-
-## Prerrequisitos
-
-Antes de empezar, asegúrate de tener instalado lo siguiente:
-
-1.  **Node.js:** Necesario para ejecutar TypeScript y `pnpm`. Puedes descargarlo desde [nodejs.org](https://nodejs.org/).
-2.  **pnpm:** Un gestor de paquetes rápido y eficiente. Se recomienda instalarlo después de Node.js ejecutando este comando en la terminal:
-    ```bash
-    npm install -g pnpm
-    ```
-3.  **Python (Opcional, recomendado):** Para levantar un servidor web local de forma sencilla. La mayoría de los sistemas operativos lo incluyen por defecto.
+-   **Framework:** [Nuxt 4](https://nuxt.com/)
+-   **UI Framework:** [Vue 3](https://vuejs.org/) (Composition API)
+-   **Componentes UI:** [Nuxt UI](https://ui.nuxt.com/) (basado en Tailwind CSS)
+-   **Lenguaje:** [TypeScript](https://www.typescriptlang.org/)
+-   **Gestor de Paquetes:** [pnpm](https://pnpm.io/)
 
 ---
 
 ## Instalación y Uso
 
-Sigue estos pasos para poner en marcha el comparador:
+Sigue estos pasos para poner en marcha el proyecto en tu entorno local.
 
-**1. Instalar Dependencias**
+**1. Prerrequisitos**
 
-Abre una terminal en la carpeta del proyecto y ejecuta:
+-   Asegúrate de tener [Node.js](https://nodejs.org/) (versión 18 o superior) instalado.
+-   Se recomienda usar `pnpm` como gestor de paquetes. Puedes instalarlo con `npm install -g pnpm`.
+
+**2. Clonar el Repositorio**
+
+```bash
+git clone https://github.com/tu-usuario/tu-repositorio.git
+cd tu-repositorio
+```
+
+**3. Instalar Dependencias**
+
+Abre una terminal en la raíz del proyecto y ejecuta:
 
 ```bash
 pnpm install
 ```
 
-Este comando leerá el `package.json` e instalará TypeScript en el proyecto.
+**4. Iniciar el Servidor de Desarrollo**
 
-**2. Compilar el Código TypeScript**
-
-El código principal está en `calculadora.ts`. Para que el navegador lo entienda, necesitas compilarlo a JavaScript. Ejecuta:
+Ejecuta el siguiente comando para iniciar la aplicación en modo de desarrollo con recarga en caliente:
 
 ```bash
-pnpm run build
+pnpm dev
 ```
 
-Este comando creará (o actualizará) el archivo `calculadora.js`. **Debes ejecutar este comando cada vez que hagas cambios en `calculadora.ts`.**
+La aplicación estará disponible en **http://localhost:3000**.
 
-**3. Iniciar el Servidor Web Local**
+## Gestión de Datos
 
-Para que el `index.html` pueda cargar el archivo `hipotecas.json`, necesitas servir los archivos desde un servidor local. La forma más sencilla es usando Python:
+Los datos de las ofertas se gestionan a través de archivos JSON ubicados en la carpeta `server/data/`. Además, puedes generar nuevas ofertas dinámicamente usando la ruta `/generador`.
 
-```bash
-# Abre una terminal en la carpeta del proyecto y ejecuta:
-python -m http.server
+-   `hipotecas.json`: Define las ofertas de los bancos, sus tipos de interés y las bonificaciones asociadas.
+-   `gastos.json`: Define los gastos iniciales (tasación, etc.) que se pueden asociar a una hipoteca.
+-   `bonificaciones.json`: Catálogo de todas las posibles bonificaciones que un banco puede ofrecer.
 
-# Si tienes Python 2, el comando puede ser: python -m SimpleHTTPServer
-```
-
-El servidor se iniciará. Verás un mensaje en la terminal como `Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/)`.
-
-**4. Abrir el Comparador**
-
-Abre tu navegador web y ve a la dirección:
-
-[**http://localhost:8000**](http://localhost:8000)
-
-¡Listo! Ya puedes usar el comparador. Introduce el importe, el plazo, el Euríbor actual y pulsa "Calcular".
-
----
-
-## Cómo Modificar las Ofertas de Hipotecas
-
-Para añadir, eliminar o editar las ofertas, simplemente abre y modifica el archivo **`hipotecas.json`**.
-
-### Estructura de una Oferta
-
-Cada oferta es un objeto JSON con los siguientes campos base:
-
--   `banco`: Nombre de la entidad.
--   `gastosTasacion`, `comisionBroker`, `otrosGastos`: Gastos iniciales en euros.
--   `gastosCancelacionAnterior`: (Opcional) Coste de cancelar una hipoteca anterior.
--   `bonificaciones`: Una lista de productos vinculados.
-
-La estructura varía según el `tipo` de hipoteca (`fija`, `variable` o `mixta`).
-
-#### Lógica del TIN y Diferencial
-
-El sistema puede definir el tipo de interés de dos maneras, lo que afecta cómo se presenta el "TIN Base" o "Diferencial Base":
-
-1.  **Tipo Base Explícito (Recomendado):** Se define un `tin` (para hipotecas fijas y tramo fijo de mixtas) o `diferencial` (para hipotecas variables y tramo variable de mixtas). Las bonificaciones (`reduccionTin`, `reduccionDiferencial`, `reduccionTinFijo`) se aplican sobre este tipo base. En este caso, el tipo base mostrado en la tabla es el que se ha configurado directamente.
-
-2.  **Tipo Bonificado Directo (Base Inferida):** Se define un `tinBonificado` o `diferencialBonificado` que ya incluye todas las reducciones de las bonificaciones. Cuando se usa esta opción, el sistema **infiere** el tipo de interés base (el valor sin bonificar) sumando las reducciones de las bonificaciones al tipo bonificado.
-    En la interfaz, este tipo base inferido se marcará con un **asterisco (*)** para indicar que no es un valor configurado explícitamente, sino que ha sido calculado por el sistema.
-
-**Prioridad:** Si se definen tanto el tipo base explícito (`tin` o `diferencial`) como el tipo bonificado (`tinBonificado` o `diferencialBonificado`), el sistema siempre priorizará y utilizará el **tipo base explícito**.
-
----
-
-#### Ejemplo: Hipoteca Fija
-
-Puedes definirla con el TIN base o el TIN ya bonificado.
-
-```json
-{
-  "banco": "Banco Fijo (TIN Base)",
-  "tipo": "fija",
-  "tin": 3.10,
-  "gastosTasacion": 300,
-  "comisionBroker": 0,
-  "otrosGastos": 150,
-  "gastosCancelacionAnterior": 1000,
-  "bonificaciones": [
-    { "nombre": "Nómina", "reduccionTin": 0.50, "costeAnual": 0 },
-    { "nombre": "Seguro de Vida", "reduccionTin": 0.25, "costeAnual": 360 }
-  ]
-},
-{
-  "banco": "Banco Fijo (Bonificado Directo)",
-  "tipo": "fija",
-  "tinBonificado": 2.25,
-  "gastosTasacion": 300,
-  "comisionBroker": 0,
-  "otrosGastos": 0,
-  "bonificaciones": [
-    { "nombre": "Nómina", "reduccionTin": 0.75, "costeAnual": 0, "isSupposed": true },
-    { "nombre": "Seguro Hogar", "reduccionTin": 0.10, "costeAnual": 250, "isSupposed": true }
-  ]
-}
-```
-
-#### Ejemplo: Hipoteca Variable
-
-Igual que la fija, puedes especificar el diferencial base o el ya bonificado.
-
-```json
-{
-  "banco": "Banco Variable (Diferencial Base)",
-  "tipo": "variable",
-  "diferencial": 0.49,
-  "gastosTasacion": 0,
-  "comisionBroker": 2500,
-  "otrosGastos": 0,
-  "bonificaciones": [
-    { "nombre": "Nómina", "reduccionDiferencial": 0.20, "costeAnual": 0 }
-  ]
-}
-```
-
-#### Ejemplo: Hipoteca Mixta
-
-La hipoteca mixta combina un período fijo y uno variable.
-
-```json
-{
-  "banco": "Hipoteca Mixta Segura",
-  "tipo": "mixta",
-  "plazoFijoAnios": 10,
-  "tinFijo": 2.50,
-  "diferencial": 0.75,
-  "gastosTasacion": 350,
-  "comisionBroker": 0,
-  "otrosGastos": 0,
-  "bonificaciones": [
-    { "nombre": "Nómina", "reduccionTinFijo": 0.30, "reduccionDiferencial": 0.20, "costeAnual": 0 }
-  ]
-}
-```
-
-### Campos de Bonificaciones
-
--   `nombre`: Nombre del producto.
--   `costeAnual`: **Prioritario.** Coste anual del producto en euros.
--   `reduccionTin`: Para hipotecas `fija`, reduce el TIN.
--   `reduccionDiferencial`: Para hipotecas `variable` o el tramo variable de una `mixta`, reduce el diferencial.
--   `reduccionTinFijo`: Para el tramo fijo de una hipoteca `mixta`, reduce el TIN fijo.
--   `isSupposed`: (Opcional) Un valor booleano que, si es `true`, marca visualmente esta bonificación en la tabla de resultados (por ejemplo, con un fondo amarillo) para indicar que es una condición o valor supuesto en la oferta.
+Para modificar, añadir o eliminar ofertas, o para utilizar la herramienta de generación dinámica, edita estos archivos o navega a la ruta `/generador`. La aplicación reflejará los cambios automáticamente.
