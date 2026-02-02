@@ -40,8 +40,8 @@ function alternarBonificacion(id: number) {
   emit('alternar', id)
 }
 
-function actualizarCoste(id: number, coste: string) {
-  emit('actualizar:coste', id, parseFloat(coste))
+function actualizarCoste(id: number, coste: number) {
+  emit('actualizar:coste', id, coste)
 }
 
 function eliminarBonificacion(id: number) {

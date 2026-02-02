@@ -125,7 +125,7 @@ async function loadBonificacionesCatalogo() {
   try {
     const data = await $fetch<IProductoPersonal[]>('/api/bonificaciones')
     bonificacionesCatalogo.value = data
-    if (bonificacionesCatalogo.value.length > 0) {
+    if (bonificacionesCatalogo.value.length > 0 && bonificacionesCatalogo.value[0]) {
       nuevoBonusSeleccionado.value = bonificacionesCatalogo.value[0].nombre
     }
   } catch (error) {

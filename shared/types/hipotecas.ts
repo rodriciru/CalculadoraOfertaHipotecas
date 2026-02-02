@@ -15,6 +15,7 @@ export interface IGasto {
 }
 
 export interface IOfertaBase {
+  id?: number | string
   banco: string
   gastosAdicionales: IGasto[]
   bonificaciones: IBonificacion[] // Usar IBonificacion

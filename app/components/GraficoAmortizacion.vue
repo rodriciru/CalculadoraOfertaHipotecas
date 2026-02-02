@@ -45,7 +45,9 @@ watch(() => props.resultado, (newResultado) => {
 watch(open, (isOpen) => {
   if (isOpen && props.resultado) {
     nextTick(() => {
-      renderChart(props.resultado)
+      if (props.resultado) {
+        renderChart(props.resultado)
+      }
     })
   }
 })

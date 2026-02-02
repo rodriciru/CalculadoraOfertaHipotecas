@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { TableColumn } from '@nuxt/ui'
 
-import { h, nextTick, resolveComponent } from 'vue'
+import { nextTick, resolveComponent } from 'vue'
 
 // Resolvemos componentes de Nuxt UI para usarlos dentro de las funciones de renderizado (JS)
 const UBadge = resolveComponent('UBadge')
@@ -150,7 +150,7 @@ async function loadGastos() {
   try {
     const data = await $fetch<IGasto[]>('/api/gastos')
     gastos.value = data
-    if (gastos.value.length > 0) {
+    if (gastos.value.length > 0 && gastos.value[0]) {
       if (!gastos.value[0].id) gastos.value[0].id = Date.now() // Asegurar ID
       nuevoGastoSeleccionado.value = gastos.value[0].nombre
       costoNuevoGasto.value = gastos.value[0].coste
@@ -175,7 +175,7 @@ async function loadBonificacionesCatalogo() {
   try {
     const data = await $fetch<Array<Pick<IBonificacion, 'id' | 'nombre'>>>('/api/bonificaciones')
     bonificacionesCatalogo.value = data
-    if (bonificacionesCatalogo.value.length > 0) {
+    if (bonificacionesCatalogo.value.length > 0 && bonificacionesCatalogo.value[0]) {
       // Inicializar la bonificación seleccionada con el primer elemento del catálogo
       nuevaBonificacionSeleccionada.value = bonificacionesCatalogo.value[0].nombre
       // El watcher se encargará de pre-rellenar los campos de edición
@@ -295,7 +295,7 @@ function addBonificacionPredefinida() {
   }
 
   // Verificar si la bonificación (por ID) ya está en la oferta
-  if (editor.data.bonificaciones.some(b => b.id === newBonif.id)) {
+  if (editor.data.bonificaciones.some((b: IBonificacion) => b.id === newBonif.id)) {
     alert(`La bonificación '${newBonif.nombre}' ya ha sido añadida a esta oferta.`)
     return
   }
@@ -478,15 +478,23 @@ function setNumericValue(value: string | number, updater: (val: number | undefin
       :loading="loading"
       class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg shadow-sm mb-8"
     >
-      <!-- TRUCO PARA RENDERIZAR COLUMNAS DEFINIDAS EN JS -->
-      <!-- Iteramos cada columna definida en 'columns' -->
-      <template
-        v-for="col in columns"
-        :key="col.key"
-        #[`${col.key}-data`]="{ row, index }"
-      >
-        <!-- Renderizamos lo que devuelve la función render(row) -->
-        <component :is="() => col.render(row, index)" />
+      <template #item="{ item, index }">
+        <div v-if="item.key === 'acciones'">
+          <UButton
+            icon="i-heroicons-pencil-square"
+            size="2xs"
+            color="success"
+            variant="ghost"
+            @click="openEditor(item, index)"
+          />
+          <UButton
+            icon="i-heroicons-trash"
+            size="2xs"
+            color="error"
+            variant="ghost"
+            @click="removeHipoteca(index)"
+          />
+        </div>
       </template>
     </UTable>
 
@@ -497,7 +505,7 @@ function setNumericValue(value: string | number, updater: (val: number | undefin
       ref="formRef"
       class="editor-section mt-8"
     >
-      <UCard :ui="{ ring: 'ring-1 ring-gray-200 dark:ring-gray-700', shadow: 'shadow-lg' }">
+      <UCard>
         <template #header>
           <div class="flex justify-between items-center">
             <h3 class="text-lg font-semibold text-primary-600">
@@ -542,7 +550,7 @@ function setNumericValue(value: string | number, updater: (val: number | undefin
                   v-model="editor.data.tin"
                   type="number"
                   step="0.05"
-                  @update:model-value="val => setNumericValue(val, v => editor.data.tin = v)"
+                  @update:model-value="(val: string | number) => setNumericValue(val, v => editor.data.tin = v)"
                 />
               </UFormField>
               <UFormField label="TIN Bonificado %">
@@ -550,7 +558,7 @@ function setNumericValue(value: string | number, updater: (val: number | undefin
                   v-model="editor.data.tinBonificado"
                   type="number"
                   step="0.05"
-                  @update:model-value="val => setNumericValue(val, v => editor.data.tinBonificado = v)"
+                  @update:model-value="(val: string | number) => setNumericValue(val, v => editor.data.tinBonificado = v)"
                 />
               </UFormField>
             </div>
@@ -565,7 +573,7 @@ function setNumericValue(value: string | number, updater: (val: number | undefin
                   v-model="editor.data.diferencial"
                   type="number"
                   step="0.05"
-                  @update:model-value="val => setNumericValue(val, v => editor.data.diferencial = v)"
+                  @update:model-value="(val: string | number) => setNumericValue(val, v => editor.data.diferencial = v)"
                 />
               </UFormField>
               <UFormField label="Diferencial Bonificado %">
@@ -573,7 +581,7 @@ function setNumericValue(value: string | number, updater: (val: number | undefin
                   v-model="editor.data.diferencialBonificado"
                   type="number"
                   step="0.05"
-                  @update:model-value="val => setNumericValue(val, v => editor.data.diferencialBonificado = v)"
+                  @update:model-value="(val: string | number) => setNumericValue(val, v => editor.data.diferencialBonificado = v)"
                 />
               </UFormField>
             </div>
@@ -588,7 +596,7 @@ function setNumericValue(value: string | number, updater: (val: number | undefin
                   <UInput
                     v-model="editor.data.plazoFijoAnios"
                     type="number"
-                    @update:model-value="val => setNumericValue(val, v => editor.data.plazoFijoAnios = v)"
+                    @update:model-value="(val: string | number) => setNumericValue(val, v => editor.data.plazoFijoAnios = v)"
                   />
                 </UFormField>
                 <UFormField label="TIN Fijo %">
@@ -596,7 +604,7 @@ function setNumericValue(value: string | number, updater: (val: number | undefin
                     v-model="editor.data.tinFijo"
                     type="number"
                     step="0.05"
-                    @update:model-value="val => setNumericValue(val, v => editor.data.tinFijo = v)"
+                    @update:model-value="(val: string | number) => setNumericValue(val, v => editor.data.tinFijo = v)"
                   />
                 </UFormField>
                 <UFormField label="TIN Fijo Bonif. %">
@@ -604,7 +612,7 @@ function setNumericValue(value: string | number, updater: (val: number | undefin
                     v-model="editor.data.tinFijoBonificado"
                     type="number"
                     step="0.05"
-                    @update:model-value="val => setNumericValue(val, v => editor.data.tinFijoBonificado = v)"
+                    @update:model-value="(val: string | number) => setNumericValue(val, v => editor.data.tinFijoBonificado = v)"
                   />
                 </UFormField>
               </div>
@@ -614,7 +622,7 @@ function setNumericValue(value: string | number, updater: (val: number | undefin
                     v-model="editor.data.diferencial"
                     type="number"
                     step="0.05"
-                    @update:model-value="val => setNumericValue(val, v => editor.data.diferencial = v)"
+                    @update:model-value="(val: string | number) => setNumericValue(val, v => editor.data.diferencial = v)"
                   />
                 </UFormField>
                 <UFormField label="Dif. Variable Bonif. %">
@@ -622,7 +630,7 @@ function setNumericValue(value: string | number, updater: (val: number | undefin
                     v-model="editor.data.diferencialBonificado"
                     type="number"
                     step="0.05"
-                    @update:model-value="val => setNumericValue(val, v => editor.data.diferencialBonificado = v)"
+                    @update:model-value="(val: string | number) => setNumericValue(val, v => editor.data.diferencialBonificado = v)"
                   />
                 </UFormField>
               </div>
@@ -656,7 +664,7 @@ function setNumericValue(value: string | number, updater: (val: number | undefin
                 placeholder="Coste (€)"
                 class="w-24"
                 size="sm"
-                @update:model-value="val => setNumericValue(val, v => costoNuevoGasto = v)"
+                @update:model-value="(val: string | number) => setNumericValue(val, v => costoNuevoGasto = v)"
               />
               <UButton
                 icon="i-heroicons-plus"
@@ -686,7 +694,7 @@ function setNumericValue(value: string | number, updater: (val: number | undefin
                   placeholder="Coste (€)"
                   class="w-24"
                   size="sm"
-                  @update:model-value="val => setNumericValue(val, v => nuevoGastoPersonalizadoCoste = v)"
+                  @update:model-value="(val: string | number) => setNumericValue(val, v => nuevoGastoPersonalizadoCoste = v)"
                 />
                 <UButton
                   icon="i-heroicons-plus"
@@ -720,13 +728,13 @@ function setNumericValue(value: string | number, updater: (val: number | undefin
                   class="w-24"
                   type="number"
                   size="sm"
-                  @update:model-value="val => setNumericValue(val, v => gasto.coste = v)"
+                  @update:model-value="(val: string | number) => setNumericValue(val, v => gasto.coste = v)"
                 />
                 <UButton
                   icon="i-heroicons-trash"
                   color="error"
                   variant="ghost"
-                  @click="removeGasto(gIndex)"
+                  @click="removeGasto(parseInt(gIndex, 10))"
                 />
               </div>
             </div>
@@ -769,7 +777,7 @@ function setNumericValue(value: string | number, updater: (val: number | undefin
                     type="number"
                     step="10"
                     size="sm"
-                    @update:model-value="val => setNumericValue(val, v => costoBonificacionAAnadir = v)"
+                    @update:model-value="(val: string | number) => setNumericValue(val, v => costoBonificacionAAnadir = v)"
                   />
                 </UFormField>
                 <UFormField label="Red. TIN (%)">
@@ -778,7 +786,7 @@ function setNumericValue(value: string | number, updater: (val: number | undefin
                     type="number"
                     step="0.01"
                     size="sm"
-                    @update:model-value="val => setNumericValue(val, v => reduccionTinBonificacionAAnadir = v)"
+                    @update:model-value="(val: string | number) => setNumericValue(val, v => reduccionTinBonificacionAAnadir = v)"
                   />
                 </UFormField>
                 <UFormField label="Red. Diferencial (%)">
@@ -787,7 +795,7 @@ function setNumericValue(value: string | number, updater: (val: number | undefin
                     type="number"
                     step="0.01"
                     size="sm"
-                    @update:model-value="val => setNumericValue(val, v => reduccionDiferencialBonificacionAAnadir = v)"
+                    @update:model-value="(val: string | number) => setNumericValue(val, v => reduccionDiferencialBonificacionAAnadir = v)"
                   />
                 </UFormField>
                 <UFormField label="Red. TIN Fijo (%)">
@@ -796,7 +804,7 @@ function setNumericValue(value: string | number, updater: (val: number | undefin
                     type="number"
                     step="0.01"
                     size="sm"
-                    @update:model-value="val => setNumericValue(val, v => reduccionTinFijoBonificacionAAnadir = v)"
+                    @update:model-value="(val: string | number) => setNumericValue(val, v => reduccionTinFijoBonificacionAAnadir = v)"
                   />
                 </UFormField>
               </div>
@@ -837,7 +845,7 @@ function setNumericValue(value: string | number, updater: (val: number | undefin
                     type="number"
                     step="10"
                     size="sm"
-                    @update:model-value="val => setNumericValue(val, v => costeAnualBonificacionPersonalizada = v)"
+                    @update:model-value="(val: string | number) => setNumericValue(val, v => costeAnualBonificacionPersonalizada = v)"
                   />
                 </UFormField>
                 <UFormField label="Red. TIN (%)">
@@ -846,7 +854,7 @@ function setNumericValue(value: string | number, updater: (val: number | undefin
                     type="number"
                     step="0.01"
                     size="sm"
-                    @update:model-value="val => setNumericValue(val, v => reduccionTinBonificacionPersonalizada = v)"
+                    @update:model-value="(val: string | number) => setNumericValue(val, v => reduccionTinBonificacionPersonalizada = v)"
                   />
                 </UFormField>
                 <UFormField label="Red. Diferencial (%)">
@@ -855,7 +863,7 @@ function setNumericValue(value: string | number, updater: (val: number | undefin
                     type="number"
                     step="0.01"
                     size="sm"
-                    @update:model-value="val => setNumericValue(val, v => reduccionDiferencialBonificacionPersonalizada = v)"
+                    @update:model-value="(val: string | number) => setNumericValue(val, v => reduccionDiferencialBonificacionPersonalizada = v)"
                   />
                 </UFormField>
                 <UFormField label="Red. TIN Fijo (%)">
@@ -864,7 +872,7 @@ function setNumericValue(value: string | number, updater: (val: number | undefin
                     type="number"
                     step="0.01"
                     size="sm"
-                    @update:model-value="val => setNumericValue(val, v => reduccionTinFijoBonificacionPersonalizada = v)"
+                    @update:model-value="(val: string | number) => setNumericValue(val, v => reduccionTinFijoBonificacionPersonalizada = v)"
                   />
                 </UFormField>
               </div>
@@ -921,7 +929,7 @@ function setNumericValue(value: string | number, updater: (val: number | undefin
                     variant="ghost"
                     size="xs"
                     class="ml-auto"
-                    @click="removeBonif(bIndex)"
+                    @click="removeBonif(parseInt(bIndex, 10))"
                   />
                 </div>
               </div>

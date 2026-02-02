@@ -1,8 +1,8 @@
 import fs from 'node:fs/promises'
-import { join } from 'node:path'
+import { resolve } from 'path'
 
 export default defineEventHandler(async (event) => {
-  const DATA_FILE = join(process.cwd(), 'server/data/bonificaciones.json')
+  const filePath = resolve(process.cwd(), 'server', 'data', 'bonificaciones.json')
   try {
     const body = await readBody(event)
     console.log(body)
@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    await fs.writeFile(DATA_FILE, JSON.stringify(body, null, 2), 'utf8')
+    await fs.writeFile(filePath, JSON.stringify(body, null, 2), 'utf8')
     return { success: true, message: 'Bonificaciones guardadas correctamente' }
   } catch (error) {
     console.error('Error al guardar bonificaciones.json:', error)

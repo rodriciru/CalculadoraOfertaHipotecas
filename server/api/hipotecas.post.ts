@@ -1,9 +1,9 @@
 import fs from 'node:fs/promises'
-import { join } from 'node:path'
+import { resolve } from 'path'
 
 export default defineEventHandler(async (event) => {
-  const DATA_FILE = join(process.cwd(), 'server/data/hipotecas.json')
   try {
+    const filePath = resolve(process.cwd(), 'server', 'data', 'hipotecas.json')
     const body = await readBody(event)
     // Validar que el cuerpo es un array de gastos
     if (!Array.isArray(body)) {
@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    await fs.writeFile(DATA_FILE, JSON.stringify(body, null, 2), 'utf8')
+    await fs.writeFile(filePath, JSON.stringify(body, null, 2), 'utf8')
     return { success: true, message: 'Hipotecas guardadas correctamente' }
   } catch (error) {
     console.error('Error al guardar hipotecas.json:', error)

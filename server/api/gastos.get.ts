@@ -1,20 +1,17 @@
-import fs from 'node:fs/promises'
-import { join } from 'node:path'
+import { defineEventHandler } from 'h3'
+import { readFileSync } from 'fs'
+import { resolve } from 'path'
 
-export default defineEventHandler(async (_event) => {
-  const DATA_FILE = join(process.cwd(), 'server/data/gastos.json')
+export default defineEventHandler((_event) => {
   try {
-    const data = await fs.readFile(DATA_FILE, 'utf8')
+    const filePath = resolve(process.cwd(), 'server', 'data', 'gastos.json')
+    const data = readFileSync(filePath, 'utf-8')
     return JSON.parse(data)
   } catch (error) {
-    if (error.code === 'ENOENT') {
-      // Si el archivo no existe, devolver un array vacío
+    if (error instanceof Error && 'code' in error && error.code === 'ENOENT') {
       return []
     }
-    console.error('Error al leer gastos.json:', error)
-    throw createError({
-      statusCode: 500,
-      statusMessage: 'Error interno del servidor al cargar gastos'
-    })
+    console.error('Error reading gastos data:', error)
+    throw error
   }
 })

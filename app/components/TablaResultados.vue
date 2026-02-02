@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { h, resolveComponent } from 'vue'
+import type { VNode } from 'vue'
 import type { TableColumn } from '@nuxt/ui'
-import type { TableMeta, Row } from '@tanstack/vue-table'
 
 const props = defineProps<{
   resultados: IResultadoCalculo[]
@@ -195,7 +195,7 @@ const columns: TableColumn<IResultadoCalculo>[] = [
       if (res.bonificaciones.length > 0) {
         // Crear lista de LIs
         const lis = res.bonificaciones.map((b) => {
-          const texts = [`- ${b.nombre}`]
+          const texts: (string | VNode)[] = [`- ${b.nombre}`]
           if (b.isSupposed) texts.push(h('span', { class: 'text-gray-500 dark:text-gray-300' }, '(Valor supuesto)'))
           texts.push(`: ${b.costeAnual > 0 ? `${formatearNumero(b.costeAnual)}/año` : 'Sin coste'}`)
           if (b.reduccionTin) texts.push(h('span', { class: 'text-gray-500 dark:text-gray-300' }, ` -${b.reduccionTin.toFixed(2)}% TIN`))
@@ -228,12 +228,8 @@ const columns: TableColumn<IResultadoCalculo>[] = [
   }
 ]
 
-const meta: TableMeta<IResultadoCalculo> = {
-  class: {
-    tr: (row: Row<IResultadoCalculo>) => {
-      return row.original.costeTotalConExtras === props.mejorOpcionCosteTotal ? 'best-choice' : ''
-    }
-  }
+const rowClass = (row: IResultadoCalculo) => {
+  return row.costeTotalConExtras === props.mejorOpcionCosteTotal ? 'best-choice' : ''
 }
 </script>
 
@@ -242,19 +238,9 @@ const meta: TableMeta<IResultadoCalculo> = {
     <UTable
       :data="resultados"
       :columns="columns"
-      :meta="meta"
+      :row-class="rowClass"
       :ui="{
-        td: 'whitespace-nowrap px-6 py-4 text-sm border border-gray-200',
-        base: 'border border-gray-200 border-collapse',
-        tr: {
-          base: 'group',
-          td: {
-            // Estilos para TD en modo claro cuando es best-choice
-            '[.best-choice_&]': 'text-gray-900',
-            // Estilos para TD en modo oscuro cuando es best-choice
-            'html.dark .best-choice_&': 'text-gray-100'
-          }
-        }
+        td: 'whitespace-nowrap px-6 py-4 text-sm border border-gray-200'
       }"
     />
   </div>

@@ -96,7 +96,9 @@ export function calcularTAE(prestamo: number, numCuotas: number, gastosIniciales
     const tirMensual = Math.pow(1 + tae, 1 / 12) - 1
     let suma = 0
     for (let i = 0; i < numCuotas; i++) {
-      suma += (flujoCuotas[i] + costeMensualProductos) / Math.pow(1 + tirMensual, i + 1)
+      if (flujoCuotas[i] !== undefined) {
+        suma += (flujoCuotas[i] + costeMensualProductos) / Math.pow(1 + tirMensual, i + 1)
+      }
     }
     return suma - importeNetoRecibido
   }
@@ -269,8 +271,8 @@ export function calcularResultadoParaOferta(oferta: OfertaHipotecaTipo, importe:
     tipo: `${oferta.tipo.charAt(0).toUpperCase()}${oferta.tipo.slice(1)}`,
     taeSinBonificar,
     taeConBonificar,
-    cuotaMensualSinBonificar: cuotasSinBonificar[0],
-    cuotaMensualConBonificar: cuotasConBonificar[0],
+    cuotaMensualSinBonificar: cuotasSinBonificar[0] ?? 0,
+    cuotaMensualConBonificar: cuotasConBonificar[0] ?? 0,
     costeTotalSinBonificar: costeTotalSinBonificar,
     costeTotalConBonificar: costeTotalConBonificar,
     costeTotalBonificaciones,
