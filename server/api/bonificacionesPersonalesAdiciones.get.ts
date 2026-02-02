@@ -4,7 +4,7 @@ import { resolve } from 'path'
 
 export default defineEventHandler(() => {
   try {
-    const filePath = resolve(process.cwd(), 'server', 'data', 'bonificacionesPersonales.json')
+    const filePath = resolve(process.cwd(), 'server', 'data', 'bonificacionesPersonalesAdiciones.json')
     const data = readFileSync(filePath, 'utf-8')
     return JSON.parse(data)
   } catch (error) {

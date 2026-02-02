@@ -5,7 +5,7 @@ import { resolve } from 'path'
 export default defineEventHandler(async (event) => {
   try {
     const body = await readBody(event)
-    const filePath = resolve(process.cwd(), 'server', 'data', 'bonificacionesPersonales.json')
+    const filePath = resolve(process.cwd(), 'server', 'data', 'bonificacionesPersonalesAdiciones.json')
     writeFileSync(filePath, JSON.stringify(body, null, 2), 'utf-8')
     return { success: true }
   } catch (error) {

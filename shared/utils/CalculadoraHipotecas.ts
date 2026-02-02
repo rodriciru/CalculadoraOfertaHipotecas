@@ -1,4 +1,4 @@
-import type { OfertaHipotecaTipo, IBonificacion, IGasto, IResultadoCalculo } from '../types/hipotecas'
+import type { OfertaHipotecaTipo, IBonificacion, IGasto, IResultadoCalculo, IProductoPersonal } from '../types/hipotecas'
 
 export class CalculadoraHipoteca {
   static calcularCuotaFrances(capital: number, interesMensual: number, meses: number): number {
@@ -188,7 +188,7 @@ export class CalculadoraHipoteca {
     return gastos?.reduce((acc, gasto) => acc + (gasto.coste || 0), 0) || 0
   }
 
-  static calcularResultadoParaOferta(oferta: OfertaHipotecaTipo, importe: number, plazoAnios: number, euribor: number, personalBonificaciones: IPersonalBonus[]): IResultadoCalculo {
+  static calcularResultadoParaOferta(oferta: OfertaHipotecaTipo, importe: number, plazoAnios: number, euribor: number, bonificacionesPersonalesAdiciones: IProductoPersonal[]): IResultadoCalculo {
     const gastosTotalesReales = this.sumGastos(oferta.gastosAdicionales)
     // Por simplicidad, asumimos que todos los gastos adicionales son para el TAE
     const gastosParaTAE = gastosTotalesReales
@@ -211,16 +211,16 @@ export class CalculadoraHipoteca {
     let costeTotalConExtras = costeTotalConBonificar
     const productosPersonalesIncluidos: string[] = []
 
-    personalBonificaciones.forEach((pBonus) => {
-      if (pBonus.enabled) {
-        const pBonusNombreNormalizado = pBonus.nombre.toLowerCase().trim()
+    bonificacionesPersonalesAdiciones.forEach((boniAdic) => {
+      if (boniAdic.enabled) {
+        const pBonusNombreNormalizado = boniAdic.nombre.toLowerCase().trim()
         const tieneBonificacionSimilar = oferta.bonificaciones.some(oBonus =>
           oBonus.nombre.toLowerCase().trim().includes(pBonusNombreNormalizado)
         )
 
         if (!tieneBonificacionSimilar) {
-          costeTotalConExtras += pBonus.costeAnual * plazoAnios
-          productosPersonalesIncluidos.push(pBonus.nombre)
+          costeTotalConExtras += boniAdic.costeAnual * plazoAnios
+          productosPersonalesIncluidos.push(boniAdic.nombre)
         }
       }
     })

@@ -49,9 +49,9 @@
       </p>
 
       <BonificacionesPersonales
-        :bonificaciones="personalBonificaciones"
-        @alternar="alternarBonificacionPersonal"
-        @actualizar:coste="actualizarCosteBonificacionPersonal"
+        :bonificaciones="bonificacionesPersonalesAdiciones"
+        @alternar="alternarBonificacionPersonalAdicional"
+        @actualizar:coste="actualizarCosteBonificacionPersonalAdicional"
         @eliminar="eliminarBonificacionPersonal"
       />
 
@@ -73,7 +73,7 @@
         </div>
         <UButton
           color="success"
-          @click="addPersonalBonus"
+          @click="addBonificacionPersonalAdicional"
         >
           Añadir Producto
         </UButton>
@@ -101,7 +101,7 @@ const importe = ref(136000)
 const plazo = ref(27)
 const euribor = ref(3.5)
 const ofertasHipotecas = ref<OfertaHipotecaTipo[]>([])
-const personalBonificaciones = ref<IProductoPersonal[]>([])
+const bonificacionesPersonalesAdiciones = ref<IProductoPersonal[]>([])
 const bonificacionesCatalogo = ref<IProductoPersonal[]>([])
 const nuevoBonusSeleccionado = ref<string>('')
 const costoNuevoBonus = ref<number>(0)
@@ -133,10 +133,10 @@ async function loadBonificacionesCatalogo() {
   }
 }
 
-async function loadPersonalBonuses() {
+async function loadBonificacionesPersonalesAdiciones() {
   try {
-    const data = await $fetch<IProductoPersonal[]>('/api/bonificacionesPersonales')
-    personalBonificaciones.value = data
+    const data = await $fetch<IProductoPersonal[]>('/api/bonificacionesPersonalesAdiciones')
+    bonificacionesPersonalesAdiciones.value = data
   } catch (error) {
     console.error('Error al cargar las bonificaciones personales:', error)
   }
@@ -167,7 +167,7 @@ function calcularComparativa() {
       importe.value,
       plazo.value,
       euribor.value,
-      personalBonificaciones.value
+      bonificacionesPersonalesAdiciones.value
     ))
   })
 }
@@ -177,18 +177,18 @@ function mostrarGrafico(resultado: IResultadoCalculo) {
   isModalOpen.value = true
 }
 
-async function savePersonalBonuses() {
+async function saveBonificacionesPersonalesAdiciones() {
   try {
-    await $fetch('/api/bonificacionesPersonales', {
+    await $fetch('/api/bonificacionesPersonalesAdiciones', {
       method: 'POST',
-      body: personalBonificaciones.value
+      body: bonificacionesPersonalesAdiciones.value
     })
   } catch (error) {
     console.error('Error al guardar las bonificaciones personales:', error)
   }
 }
 
-function addPersonalBonus() {
+function addBonificacionPersonalAdicional() {
   const name = nuevoBonusSeleccionado.value
   const cost = costoNuevoBonus.value
   const selectedBonusFromCatalog = bonificacionesCatalogo.value.find(b => b.nombre === name)
@@ -203,7 +203,7 @@ function addPersonalBonus() {
     return
   }
 
-  if (personalBonificaciones.value.some(b => b.id === selectedBonusFromCatalog.id)) {
+  if (bonificacionesPersonalesAdiciones.value.some(b => b.id === selectedBonusFromCatalog.id)) {
     alert(`El producto '${name}' ya ha sido añadido.`)
     return
   }
@@ -214,39 +214,39 @@ function addPersonalBonus() {
     costeAnual: cost,
     enabled: true
   }
-  personalBonificaciones.value.push(newBonus)
-  savePersonalBonuses()
+  bonificacionesPersonalesAdiciones.value.push(newBonus)
+  saveBonificacionesPersonalesAdiciones()
   calcularComparativa()
 }
 
 function eliminarBonificacionPersonal(id: number) {
-  personalBonificaciones.value = personalBonificaciones.value.filter(bonus => bonus.id !== id)
-  savePersonalBonuses()
+  bonificacionesPersonalesAdiciones.value = bonificacionesPersonalesAdiciones.value.filter(bonus => bonus.id !== id)
+  saveBonificacionesPersonalesAdiciones()
   calcularComparativa()
 }
 
-function alternarBonificacionPersonal(id: number) {
-  const bonus = personalBonificaciones.value.find(b => b.id === id)
+function alternarBonificacionPersonalAdicional(id: number) {
+  const bonus = bonificacionesPersonalesAdiciones.value.find(b => b.id === id)
   if (bonus) {
     bonus.enabled = !bonus.enabled
     calcularComparativa()
   }
 }
 
-function actualizarCosteBonificacionPersonal(id: number, cost: number) {
-  const bonus = personalBonificaciones.value.find(b => b.id === id)
+function actualizarCosteBonificacionPersonalAdicional(id: number, cost: number) {
+  const bonus = bonificacionesPersonalesAdiciones.value.find(b => b.id === id)
   if (bonus) {
     bonus.costeAnual = cost
-    savePersonalBonuses()
+    saveBonificacionesPersonalesAdiciones()
     calcularComparativa()
   }
 }
 
-watch(personalBonificaciones, savePersonalBonuses, { deep: true })
+watch(bonificacionesPersonalesAdiciones, saveBonificacionesPersonalesAdiciones, { deep: true })
 
 onMounted(() => {
   cargarOfertas()
-  loadPersonalBonuses()
+  loadBonificacionesPersonalesAdiciones()
   loadBonificacionesCatalogo()
 })
 </script>

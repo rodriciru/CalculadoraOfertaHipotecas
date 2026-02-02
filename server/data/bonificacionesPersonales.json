@@ -1,14 +1,1 @@
-[
-  {
-    "id": 1770031635003,
-    "nombre": "Seguro de vida",
-    "costeAnual": 369.52,
-    "enabled": true
-  },
-  {
-    "id": "seguro-hogar",
-    "nombre": "Seguro de hogar",
-    "costeAnual": 290,
-    "enabled": true
-  }
-]
+[]
