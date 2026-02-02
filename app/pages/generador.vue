@@ -443,13 +443,13 @@ onMounted(() => {
   loadBonificacionesCatalogo() // Nueva llamada para cargar bonificaciones
 })
 
-function setNumericValue(value: string | number, updater: (val: number | undefined) => void) {
+function setNumericValue(value: string | number, updater: (val: number) => void) {
   if (value === '' || value === null) {
-    updater(undefined)
+    updater(0)
     return
   }
   const parsed = parseFloat(String(value))
-  updater(isNaN(parsed) ? undefined : parsed)
+  updater(isNaN(parsed) ? 0 : parsed)
 }
 </script>
 
@@ -477,26 +477,7 @@ function setNumericValue(value: string | number, updater: (val: number | undefin
       :columns="columns"
       :loading="loading"
       class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg shadow-sm mb-8"
-    >
-      <template #item="{ item, index }">
-        <div v-if="item.key === 'acciones'">
-          <UButton
-            icon="i-heroicons-pencil-square"
-            size="2xs"
-            color="success"
-            variant="ghost"
-            @click="openEditor(item, index)"
-          />
-          <UButton
-            icon="i-heroicons-trash"
-            size="2xs"
-            color="error"
-            variant="ghost"
-            @click="removeHipoteca(index)"
-          />
-        </div>
-      </template>
-    </UTable>
+    />
 
     <!-- FORMULARIO DE EDICIÓN (DEBAJO DE LA TABLA) -->
     <!-- Aparece solo si editor.active es true -->
@@ -734,7 +715,7 @@ function setNumericValue(value: string | number, updater: (val: number | undefin
                   icon="i-heroicons-trash"
                   color="error"
                   variant="ghost"
-                  @click="removeGasto(parseInt(gIndex, 10))"
+                  @click="removeGasto(Number(gIndex))"
                 />
               </div>
             </div>
@@ -929,7 +910,7 @@ function setNumericValue(value: string | number, updater: (val: number | undefin
                     variant="ghost"
                     size="xs"
                     class="ml-auto"
-                    @click="removeBonif(parseInt(bIndex, 10))"
+                    @click="removeBonif(Number(bIndex))"
                   />
                 </div>
               </div>

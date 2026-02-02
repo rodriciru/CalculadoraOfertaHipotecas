@@ -104,8 +104,9 @@ export function calcularTAE(prestamo: number, numCuotas: number, gastosIniciales
     const tirMensual = Math.pow(1 + tae, 1 / 12) - 1
     let suma = 0
     for (let i = 0; i < numCuotas; i++) {
-      if (flujoCuotas[i] !== undefined) {
-        suma += (flujoCuotas[i] + costeMensualProductos) / Math.pow(1 + tirMensual, i + 1)
+      const cuota = flujoCuotas[i]
+      if (typeof cuota === 'number') {
+        suma += (cuota + costeMensualProductos) / Math.pow(1 + tirMensual, i + 1)
       }
     }
     return suma - importeNetoRecibido

@@ -8,7 +8,7 @@ const props = defineProps<{
   mejorOpcionCosteTotal: number
 }>()
 
-const emit = defineEmits(['verGrafico'])
+const emit = defineEmits(['verGrafico', 'alternarBonificacion'])
 
 // Resolvemos componentes de Nuxt UI para usarlos en las funciones de renderizado
 const UButton = resolveComponent('UButton')
