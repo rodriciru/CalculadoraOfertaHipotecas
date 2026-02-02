@@ -12,6 +12,7 @@
 
 <script setup lang="ts">
 import Chart from 'chart.js/auto'
+import type { TooltipItem } from 'chart.js'
 
 const props = defineProps<{
   modelValue: boolean
@@ -106,7 +107,7 @@ function renderChart(resultado: IResultadoCalculo) {
       plugins: {
         tooltip: {
           callbacks: {
-            label: function (context: any) {
+            label: function (context: TooltipItem<'line'>) {
               let label = context.dataset.label || ''
               if (label) {
                 label += ': '
@@ -135,8 +136,8 @@ function generarDatosAmortizacion(oferta: OfertaHipotecaTipo, importe: number, p
   let acumuladoCapital = 0
 
   for (let mes = 1; mes <= plazoMeses; mes++) {
-    const interesMensual = CalculadoraHipoteca.obtenerInteresMensual(oferta, euribor, conBonificaciones, mes)
-    const cuota = CalculadoraHipoteca.calcularCuotaFrances(capitalPendiente, interesMensual.rate, plazoMeses - mes + 1)
+    const interesMensual = obtenerInteresMensual(oferta, euribor, conBonificaciones, mes)
+    const cuota = calcularCuotaFrances(capitalPendiente, interesMensual.rate, plazoMeses - mes + 1)
     const interesPagadoMes = capitalPendiente * interesMensual.rate
     const capitalAmortizadoMes = cuota - interesPagadoMes
 

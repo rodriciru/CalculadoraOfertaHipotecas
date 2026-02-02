@@ -6,7 +6,7 @@ import { h, nextTick, resolveComponent } from 'vue'
 // Resolvemos componentes de Nuxt UI para usarlos dentro de las funciones de renderizado (JS)
 const UBadge = resolveComponent('UBadge')
 const UButton = resolveComponent('UButton')
-const UIcon = resolveComponent('UIcon')
+const _UIcon = resolveComponent('UIcon')
 const USelect = resolveComponent('USelect') // Añadido
 const UInput = resolveComponent('UInput')
 const UCheckbox = resolveComponent('UCheckbox') // Añadido
@@ -140,7 +140,7 @@ async function fetchHipotecas() {
     const data = await $fetch<OfertaHipotecaTipo[]>('/api/hipotecas')
     hipotecas.value = data || []
   } catch (error) {
-    console.warn('API no disponible.')
+    console.warn('API no disponible.', error)
   } finally {
     loading.value = false
   }
@@ -201,7 +201,7 @@ async function saveToServer() {
   try {
     await $fetch('/api/hipotecas', { method: 'POST', body: hipotecas.value })
   } catch (e) {
-    console.log('Error guardando en API')
+    console.error('Error guardando en API', e)
   }
 }
 

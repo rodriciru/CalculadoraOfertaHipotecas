@@ -162,7 +162,7 @@ function calcularComparativa() {
   }
   resultados.value.length = 0
   ofertasHipotecas.value.forEach((oferta) => {
-    resultados.value.push(CalculadoraHipoteca.calcularResultadoParaOferta(
+    resultados.value.push(calcularResultadoParaOferta(
       oferta,
       importe.value,
       plazo.value,

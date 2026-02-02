@@ -1,20 +1,14 @@
-import fs from 'node:fs/promises'
-import { join } from 'node:path'
+import { defineEventHandler } from 'h3'
+import { readFileSync } from 'fs'
+import { resolve } from 'path'
 
-export default defineEventHandler(async (event) => {
-  const DATA_FILE = join(process.cwd(), 'server/data/hipotecas.json')
+export default defineEventHandler((_event) => {
   try {
-    const data = await fs.readFile(DATA_FILE, 'utf8')
+    const filePath = resolve(process.cwd(), 'server', 'data', 'hipotecas.json')
+    const data = readFileSync(filePath, 'utf-8')
     return JSON.parse(data)
   } catch (error) {
-    if (error.code === 'ENOENT') {
-      // Si el archivo no existe, devolver un array vacío
-      return []
-    }
-    console.error('Error al leer hipotecas.json:', error)
-    throw createError({
-      statusCode: 500,
-      statusMessage: 'Error interno del servidor al cargar hipotecas'
-    })
+    console.error('Error reading hipotecas data:', error)
+    return []
   }
 })

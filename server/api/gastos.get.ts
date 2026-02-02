@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises'
 import { join } from 'node:path'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (_event) => {
   const DATA_FILE = join(process.cwd(), 'server/data/gastos.json')
   try {
     const data = await fs.readFile(DATA_FILE, 'utf8')
