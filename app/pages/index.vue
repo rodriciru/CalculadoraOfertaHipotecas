@@ -29,12 +29,6 @@
           step="0.01"
         />
       </UFormField>
-      <UButton
-        class="mt-6 md:mt-0"
-        @click="calcularComparativa"
-      >
-        Calcular
-      </UButton>
     </div>
 
     <!-- Productos Personales Adicionales -->
@@ -106,9 +100,26 @@ const bonificacionesPersonalesAdiciones = ref<IProductoPersonal[]>([])
 const bonificacionesCatalogo = ref<IProductoPersonal[]>([])
 const nuevoBonusSeleccionado = ref<string>('')
 const costoNuevoBonus = ref<number>(0)
-const resultados = ref<IResultadoCalculo[]>([])
 const isModalOpen = ref(false)
 const resultadoSeleccionado = ref<IResultadoCalculo | null>(null)
+
+const resultados = computed<IResultadoCalculo[]>(() => {
+  if (isNaN(importe.value) || isNaN(plazo.value) || isNaN(euribor.value) || importe.value <= 0 || plazo.value <= 0 || ofertasHipotecas.value.length === 0) {
+    return []
+  }
+
+  const newResultados: IResultadoCalculo[] = []
+  ofertasHipotecas.value.forEach((oferta) => {
+    newResultados.push(calcularResultadoParaOferta(
+      oferta,
+      importe.value,
+      plazo.value,
+      euribor.value,
+      bonificacionesPersonalesAdiciones.value
+    ))
+  })
+  return newResultados
+})
 
 const mejorOpcionCosteTotal = computed(() => {
   if (resultados.value.length === 0) return 0
@@ -146,43 +157,27 @@ async function loadBonificacionesPersonalesAdiciones() {
 async function cargarOfertas() {
   try {
     const response = await $fetch<OfertaHipotecaTipo[]>('/api/hipotecas')
+
     ofertasHipotecas.value = response.map(oferta => ({
+
       ...oferta,
+
       bonificaciones: oferta.bonificaciones.map(b => ({ ...b, enabled: true }))
+
     }))
-    calcularComparativa()
   } catch (error) {
     console.error('Error al cargar las ofertas de hipotecas:', error)
   }
 }
 
-function calcularComparativa() {
-  if (isNaN(importe.value) || isNaN(plazo.value) || isNaN(euribor.value) || importe.value <= 0 || plazo.value <= 0) {
-    return
-  }
-
-  if (ofertasHipotecas.value.length === 0) {
-    return
-  }
-  resultados.value.length = 0
-  ofertasHipotecas.value.forEach((oferta) => {
-    resultados.value.push(calcularResultadoParaOferta(
-      oferta,
-      importe.value,
-      plazo.value,
-      euribor.value,
-      bonificacionesPersonalesAdiciones.value
-    ))
-  })
-}
-
 function alternarBonificacion({ hipotecaId, bonificacionId }: { hipotecaId: number | string, bonificacionId: number | string }) {
   const oferta = ofertasHipotecas.value.find(o => o.id === hipotecaId)
+
   if (oferta) {
     const bonus = oferta.bonificaciones.find(b => b.id === bonificacionId)
+
     if (bonus) {
       bonus.enabled = !bonus.enabled
-      calcularComparativa()
     }
   }
 }
@@ -231,20 +226,17 @@ function addBonificacionPersonalAdicional() {
   }
   bonificacionesPersonalesAdiciones.value.push(newBonus)
   saveBonificacionesPersonalesAdiciones()
-  calcularComparativa()
 }
 
 function eliminarBonificacionPersonal(id: number) {
   bonificacionesPersonalesAdiciones.value = bonificacionesPersonalesAdiciones.value.filter(bonus => bonus.id !== id)
   saveBonificacionesPersonalesAdiciones()
-  calcularComparativa()
 }
 
 function alternarBonificacionPersonalAdicional(id: number) {
   const bonus = bonificacionesPersonalesAdiciones.value.find(b => b.id === id)
   if (bonus) {
     bonus.enabled = !bonus.enabled
-    calcularComparativa()
   }
 }
 
@@ -253,7 +245,6 @@ function actualizarCosteBonificacionPersonalAdicional(id: number, cost: number) 
   if (bonus) {
     bonus.costeAnual = cost
     saveBonificacionesPersonalesAdiciones()
-    calcularComparativa()
   }
 }
 
