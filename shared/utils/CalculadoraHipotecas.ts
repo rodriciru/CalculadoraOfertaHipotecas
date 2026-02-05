@@ -14,16 +14,27 @@ export function obtenerInteresMensual(oferta: OfertaHipotecaTipo, euribor: numbe
 
   const sumReductions = (bonificaciones: IBonificacion[], type: 'tin' | 'diferencial' | 'tinFijo') => {
     return bonificaciones.reduce((acc, b) => {
-      if (type === 'tin' && b.reduccionTin !== undefined) return acc + b.reduccionTin
-      if (type === 'diferencial') {
-        if (b.reduccionDiferencial !== undefined) return acc + b.reduccionDiferencial
-        if (b.reduccionTin !== undefined) return acc + b.reduccionTin
+      let currentReduction = 0
+      if (type === 'tin') {
+        if (b.reduccionTin !== undefined) {
+          currentReduction += b.reduccionTin
+        }
+      } else if (type === 'diferencial') {
+        if (b.reduccionDiferencial !== undefined) {
+          currentReduction += b.reduccionDiferencial
+        }
+        if (b.reduccionTin !== undefined) {
+          currentReduction += b.reduccionTin
+        }
+      } else if (type === 'tinFijo') {
+        if (b.reduccionTinFijo !== undefined) {
+          currentReduction += b.reduccionTinFijo
+        }
+        if (b.reduccionTin !== undefined) {
+          currentReduction += b.reduccionTin
+        }
       }
-      if (type === 'tinFijo') {
-        if (b.reduccionTinFijo !== undefined) return acc + b.reduccionTinFijo
-        if (b.reduccionTin !== undefined) return acc + b.reduccionTin
-      }
-      return acc
+      return acc + currentReduction
     }, 0)
   }
 
