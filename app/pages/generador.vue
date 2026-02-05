@@ -28,17 +28,13 @@ const nuevoGastoPersonalizadoCoste = ref<number>(0)
 const bonificacionesCatalogo = ref<Array<Pick<IBonificacion, 'id' | 'nombre'>>>([]) // Catálogo global simplificado
 const nuevaBonificacionSeleccionada = ref<string>('') // Nombre de la bonificación predefinida seleccionada
 const costoBonificacionAAnadir = ref<number>(0)
-const reduccionTinBonificacionAAnadir = ref<number | undefined>(undefined)
-const reduccionDiferencialBonificacionAAnadir = ref<number | undefined>(undefined)
-const reduccionTinFijoBonificacionAAnadir = ref<number | undefined>(undefined)
+const reduccionBonificacionAAnadir = ref<number | undefined>(undefined)
 const isSupposedBonificacionAAnadir = ref<boolean>(false)
 
 // Campos para crear y añadir una bonificación personalizada al catálogo y a la oferta
 const nombreBonificacionPersonalizada = ref<string>('')
 const costeAnualBonificacionPersonalizada = ref<number>(0)
-const reduccionTinBonificacionPersonalizada = ref<number | undefined>(undefined)
-const reduccionDiferencialBonificacionPersonalizada = ref<number | undefined>(undefined)
-const reduccionTinFijoBonificacionPersonalizada = ref<number | undefined>(undefined)
+const reduccionBonificacionPersonalizada = ref<number | undefined>(undefined)
 const isSupposedBonificacionPersonalizada = ref<boolean>(false)
 
 // Estado del Editor
@@ -220,16 +216,12 @@ function openEditor(hipoteca: Partial<OfertaHipotecaTipo> = {}, index = -1) {
   // Resetear campos de adición de bonificación para evitar arrastrar valores de una edición a otra
   nuevaBonificacionSeleccionada.value = ''
   costoBonificacionAAnadir.value = 0
-  reduccionTinBonificacionAAnadir.value = undefined
-  reduccionDiferencialBonificacionAAnadir.value = undefined
-  reduccionTinFijoBonificacionAAnadir.value = undefined
+  reduccionBonificacionAAnadir.value = undefined
   isSupposedBonificacionAAnadir.value = false
 
   nombreBonificacionPersonalizada.value = ''
   costeAnualBonificacionPersonalizada.value = 0
-  reduccionTinBonificacionPersonalizada.value = undefined
-  reduccionDiferencialBonificacionPersonalizada.value = undefined
-  reduccionTinFijoBonificacionPersonalizada.value = undefined
+  reduccionBonificacionPersonalizada.value = undefined
   isSupposedBonificacionPersonalizada.value = false
 
   // 2. Activamos el formulario
@@ -288,9 +280,7 @@ function addBonificacionPredefinida() {
     id: selectedBonifCatalogoItem.id || Date.now().toString(), // Usar ID del catálogo o generar uno nuevo
     nombre: selectedBonifCatalogoItem.nombre,
     costeAnual: costoBonificacionAAnadir.value,
-    reduccionTin: reduccionTinBonificacionAAnadir.value,
-    reduccionDiferencial: reduccionDiferencialBonificacionAAnadir.value,
-    reduccionTinFijo: reduccionTinFijoBonificacionAAnadir.value,
+    reduccion: reduccionBonificacionAAnadir.value,
     isSupposed: isSupposedBonificacionAAnadir.value
   }
 
@@ -306,9 +296,7 @@ function addBonificacionPredefinida() {
 function addBonificacionPersonalizada() {
   const name = nombreBonificacionPersonalizada.value.trim()
   const cost = costeAnualBonificacionPersonalizada.value
-  const reduTin = reduccionTinBonificacionPersonalizada.value
-  const reduDif = reduccionDiferencialBonificacionPersonalizada.value
-  const reduTinFijo = reduccionTinFijoBonificacionPersonalizada.value
+  const redu = reduccionBonificacionPersonalizada.value
   const isSupposed = isSupposedBonificacionPersonalizada.value
 
   if (!name || isNaN(cost) || cost < 0) {
@@ -322,9 +310,7 @@ function addBonificacionPersonalizada() {
     id: newId,
     nombre: name,
     costeAnual: cost,
-    reduccionTin: reduTin,
-    reduccionDiferencial: reduDif,
-    reduccionTinFijo: reduTinFijo,
+    reduccion: redu,
     isSupposed: isSupposed
   }
 
@@ -769,31 +755,13 @@ function setNumericValue(value: string | number, updater: (val: number) => void)
                     @update:model-value="(val: string | number) => setNumericValue(val, v => costoBonificacionAAnadir = v)"
                   />
                 </UFormField>
-                <UFormField label="Red. TIN (%)">
+                <UFormField label="Reducción %">
                   <UInput
-                    v-model="reduccionTinBonificacionAAnadir"
+                    v-model="reduccionBonificacionAAnadir"
                     type="number"
                     step="0.01"
                     size="sm"
-                    @update:model-value="(val: string | number) => setNumericValue(val, v => reduccionTinBonificacionAAnadir = v)"
-                  />
-                </UFormField>
-                <UFormField label="Red. Diferencial (%)">
-                  <UInput
-                    v-model="reduccionDiferencialBonificacionAAnadir"
-                    type="number"
-                    step="0.01"
-                    size="sm"
-                    @update:model-value="(val: string | number) => setNumericValue(val, v => reduccionDiferencialBonificacionAAnadir = v)"
-                  />
-                </UFormField>
-                <UFormField label="Red. TIN Fijo (%)">
-                  <UInput
-                    v-model="reduccionTinFijoBonificacionAAnadir"
-                    type="number"
-                    step="0.01"
-                    size="sm"
-                    @update:model-value="(val: string | number) => setNumericValue(val, v => reduccionTinFijoBonificacionAAnadir = v)"
+                    @update:model-value="(val: string | number) => setNumericValue(val, v => reduccionBonificacionAAnadir = v)"
                   />
                 </UFormField>
               </div>
@@ -837,31 +805,13 @@ function setNumericValue(value: string | number, updater: (val: number) => void)
                     @update:model-value="(val: string | number) => setNumericValue(val, v => costeAnualBonificacionPersonalizada = v)"
                   />
                 </UFormField>
-                <UFormField label="Red. TIN (%)">
+                <UFormField label="Reducción %">
                   <UInput
-                    v-model="reduccionTinBonificacionPersonalizada"
+                    v-model="reduccionBonificacionPersonalizada"
                     type="number"
                     step="0.01"
                     size="sm"
-                    @update:model-value="(val: string | number) => setNumericValue(val, v => reduccionTinBonificacionPersonalizada = v)"
-                  />
-                </UFormField>
-                <UFormField label="Red. Diferencial (%)">
-                  <UInput
-                    v-model="reduccionDiferencialBonificacionPersonalizada"
-                    type="number"
-                    step="0.01"
-                    size="sm"
-                    @update:model-value="(val: string | number) => setNumericValue(val, v => reduccionDiferencialBonificacionPersonalizada = v)"
-                  />
-                </UFormField>
-                <UFormField label="Red. TIN Fijo (%)">
-                  <UInput
-                    v-model="reduccionTinFijoBonificacionPersonalizada"
-                    type="number"
-                    step="0.01"
-                    size="sm"
-                    @update:model-value="(val: string | number) => setNumericValue(val, v => reduccionTinFijoBonificacionPersonalizada = v)"
+                    @update:model-value="(val: string | number) => setNumericValue(val, v => reduccionBonificacionPersonalizada = v)"
                   />
                 </UFormField>
               </div>
@@ -897,17 +847,9 @@ function setNumericValue(value: string | number, updater: (val: number) => void)
                   <span class="font-medium text-gray-800 dark:text-gray-200">{{ bon.nombre }}</span>
                   <span class="text-sm text-gray-600 dark:text-gray-400">({{ formatearNumero(bon.costeAnual) }}/año)</span>
                   <span
-                    v-if="bon.reduccionTin"
+                    v-if="bon.reduccion"
                     class="text-xs text-blue-600 dark:text-blue-300"
-                  >-{{ bon.reduccionTin.toFixed(2) }}% TIN</span>
-                  <span
-                    v-if="bon.reduccionDiferencial"
-                    class="text-xs text-green-600 dark:text-green-300"
-                  >-{{ bon.reduccionDiferencial.toFixed(2) }}% Dif.</span>
-                  <span
-                    v-if="bon.reduccionTinFijo"
-                    class="text-xs text-purple-600 dark:text-purple-300"
-                  >-{{ bon.reduccionTinFijo.toFixed(2) }}% TIN Fijo</span>
+                  >-{{ bon.reduccion.toFixed(2) }}%</span>
                   <span
                     v-if="bon.isSupposed"
                     class="text-xs text-yellow-600 dark:text-yellow-300"

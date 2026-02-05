@@ -144,6 +144,10 @@ const columns: TableColumn<IResultadoCalculo>[] = [
         ? h('div', { class: 'mt-2 p-2 bg-yellow-100 dark:bg-yellow-800 border-l-4 border-yellow-500 text-yellow-700 dark:text-yellow-200 text-xs' }, res.rateMismatchWarning)
         : null
 
+      const bonusCapWarning = res.bonusCapWarning
+        ? h('div', { class: 'mt-2 p-2 bg-blue-100 dark:bg-blue-800 border-l-4 border-blue-500 text-blue-700 dark:text-blue-200 text-xs' }, res.bonusCapWarning)
+        : null
+
       // Coste Total Real (Extras)
       let realCost = null
       if (res.productosPersonalesIncluidos && res.productosPersonalesIncluidos.length > 0) {
@@ -158,7 +162,7 @@ const columns: TableColumn<IResultadoCalculo>[] = [
         )
       }
 
-      return h('div', { class: 'whitespace-normal' }, [tae, typeDetails, warning, quotas, totalCost, realCost])
+      return h('div', { class: 'whitespace-normal' }, [tae, typeDetails, warning, bonusCapWarning, quotas, totalCost, realCost])
     }
   },
   {
@@ -232,9 +236,7 @@ const columns: TableColumn<IResultadoCalculo>[] = [
           const texts: (string | VNode)[] = [b.nombre]
           if (b.isSupposed) texts.push(h('span', { class: 'text-gray-500' }, '(S)'))
           texts.push(`: ${b.costeAnual > 0 ? `${formatearNumero(b.costeAnual)}/año` : 'Sin coste'}`)
-          if (b.reduccionTin) texts.push(h('span', { class: 'text-gray-500' }, ` -${b.reduccionTin.toFixed(2)}% TIN`))
-          if (b.reduccionDiferencial) texts.push(h('span', { class: 'text-gray-500' }, ` -${b.reduccionDiferencial.toFixed(2)}% Dif.`))
-          if (b.reduccionTinFijo) texts.push(h('span', { class: 'text-gray-500' }, ` -${b.reduccionTinFijo.toFixed(2)}% TIN Fijo`))
+          if (b.reduccion) texts.push(h('span', { class: 'text-gray-500' }, ` -${b.reduccion.toFixed(2)}%`))
 
           const label = h('label', { class: 'ml-2 flex-grow' }, texts)
 

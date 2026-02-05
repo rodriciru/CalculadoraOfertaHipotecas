@@ -1,9 +1,7 @@
 export interface IBonificacion {
   id?: number | string // Identificación única
   nombre: string
-  reduccionTin?: number
-  reduccionDiferencial?: number
-  reduccionTinFijo?: number
+  reduccion?: number
   costeAnual: number
   isSupposed?: boolean
   enabled?: boolean
@@ -81,4 +79,5 @@ export interface IResultadoCalculo {
   diferencialInicialVariable?: number
   diferencialBonificadoVariable?: number
   rateMismatchWarning?: string
+  bonusCapWarning?: string
 }

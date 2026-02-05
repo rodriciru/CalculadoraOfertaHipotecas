@@ -11,37 +11,14 @@ export function obtenerInteresMensual(oferta: OfertaHipotecaTipo, euribor: numbe
   let baseRate = 0
   let isAssumedBase = false
 
-  const sumReductions = (bonificaciones: IBonificacion[], type: 'tin' | 'diferencial' | 'tinFijo') => {
-    // This function correctly sums up the potential reduction values from a list of bonuses.
-    return bonificaciones.reduce((acc, b) => {
-      let currentReduction = 0
-      if (type === 'tin') {
-        if (b.reduccionTin !== undefined) {
-          currentReduction += b.reduccionTin
-        }
-      } else if (type === 'diferencial') {
-        if (b.reduccionDiferencial !== undefined) {
-          currentReduction += b.reduccionDiferencial
-        }
-        if (b.reduccionTin !== undefined) {
-          currentReduction += b.reduccionTin
-        }
-      } else if (type === 'tinFijo') {
-        if (b.reduccionTinFijo !== undefined) {
-          currentReduction += b.reduccionTinFijo
-        }
-        if (b.reduccionTin !== undefined) {
-          currentReduction += b.reduccionTin
-        }
-      }
-      return acc + currentReduction
-    }, 0)
+  // Simplified sum function for the new data model
+  const sumReductions = (bonificaciones: IBonificacion[]) => {
+    return bonificaciones.reduce((acc, b) => acc + (b.reduccion || 0), 0)
   }
 
   const bonificacionesActivas = oferta.bonificaciones.filter(b => b.enabled !== false)
   let interestType: 'tin' | 'diferencial' | 'tinFijo' = 'tin'
 
-  // Determine the correct interest type based on the mortgage type and term
   if (oferta.tipo === 'variable') {
     interestType = 'diferencial'
   } else if (oferta.tipo === 'mixta') {
@@ -49,10 +26,9 @@ export function obtenerInteresMensual(oferta: OfertaHipotecaTipo, euribor: numbe
     interestType = (mesActual <= plazoFijoMeses) ? 'tinFijo' : 'diferencial'
   }
 
-  // --- STEP 1: Determine the correct Base Rate ---
   const reduccionParaInferencia = oferta.topeBonificacion !== undefined
-    ? oferta.topeBonificacion // For inference, we assume the BEST possible bonus was applied, which is the cap.
-    : sumReductions(oferta.bonificaciones, interestType) // If no cap, assume all bonuses were applied.
+    ? oferta.topeBonificacion
+    : sumReductions(oferta.bonificaciones)
 
   let baseValue: number | undefined
   let bonifiedValue: number | undefined
@@ -80,18 +56,16 @@ export function obtenerInteresMensual(oferta: OfertaHipotecaTipo, euribor: numbe
     baseRate = isEuriborBased ? euribor + baseValue : baseValue
   } else if (bonifiedValue !== undefined) {
     const effectiveBonifiedValue = isEuriborBased ? euribor + bonifiedValue : bonifiedValue
-    baseRate = effectiveBonifiedValue + reduccionParaInferencia // Add back the assumed reduction to get the base rate.
+    baseRate = effectiveBonifiedValue + reduccionParaInferencia
     isAssumedBase = true
   } else {
     baseRate = isEuriborBased ? euribor : 0
     isAssumedBase = true
   }
 
-  // --- STEP 2: Calculate the Final Rate based on active bonuses ---
   let finalRate = baseRate
   if (conBonificaciones) {
-    const reduccionActiva = sumReductions(bonificacionesActivas, interestType)
-    // The actual reduction is the sum of ACTIVE bonuses, capped by the bonus limit.
+    const reduccionActiva = sumReductions(bonificacionesActivas)
     const reduccionAplicada = oferta.topeBonificacion !== undefined
       ? Math.min(reduccionActiva, oferta.topeBonificacion)
       : reduccionActiva
@@ -205,7 +179,6 @@ export function sumGastos(gastos: IGasto[] | undefined): number {
 
 export function calcularResultadoParaOferta(oferta: OfertaHipotecaTipo, importe: number, plazoAnios: number, euribor: number, bonificacionesPersonalesAdiciones: IProductoPersonal[]): IResultadoCalculo {
   const gastosTotalesReales = sumGastos(oferta.gastosAdicionales)
-  // Por simplicidad, asumimos que todos los gastos adicionales son para el TAE
   const gastosParaTAE = gastosTotalesReales
   const plazoMeses = plazoAnios * 12
 
@@ -232,7 +205,6 @@ export function calcularResultadoParaOferta(oferta: OfertaHipotecaTipo, importe:
       const tieneBonificacionSimilar = oferta.bonificaciones.some(oBonus =>
         oBonus.nombre.toLowerCase().trim().includes(pBonusNombreNormalizado)
       )
-
       if (!tieneBonificacionSimilar) {
         costeTotalConExtras += boniAdic.costeAnual * plazoAnios
         productosPersonalesIncluidos.push(boniAdic.nombre)
@@ -244,13 +216,21 @@ export function calcularResultadoParaOferta(oferta: OfertaHipotecaTipo, importe:
   let diferencialInicialVariable: number | undefined
   let diferencialBonificadoVariable: number | undefined
   let isAssumedBaseRate = baseRateInfoSinBonif.isAssumedBase
+  let rateMismatchWarning: string | undefined
+  const tolerance = 0.001
 
   if (oferta.tipo === 'fija') {
     tinInicial = baseRateInfoSinBonif.rate * 1200
     tinBonificado = baseRateInfoConBonif.rate * 1200
+    if (oferta.tinBonificado !== undefined && Math.abs(tinBonificado - oferta.tinBonificado) > tolerance) {
+      rateMismatchWarning = `El TIN bonificado (${oferta.tinBonificado.toFixed(2)}%) no se alcanza con las bonificaciones activas.`
+    }
   } else if (oferta.tipo === 'variable') {
     diferencialInicial = (baseRateInfoSinBonif.rate * 1200) - euribor
     diferencialBonificado = Math.max(0, (baseRateInfoConBonif.rate * 1200) - euribor)
+    if (oferta.diferencialBonificado !== undefined && Math.abs(diferencialBonificado - oferta.diferencialBonificado) > tolerance) {
+      rateMismatchWarning = `El diferencial bonificado (${oferta.diferencialBonificado.toFixed(2)}%) no se alcanza con las bonificaciones activas.`
+    }
   } else if (oferta.tipo === 'mixta') {
     tinInicial = (obtenerInteresMensual(oferta, euribor, false, 1).rate * 1200)
     tinBonificado = (obtenerInteresMensual(oferta, euribor, true, 1).rate * 1200)
@@ -265,6 +245,21 @@ export function calcularResultadoParaOferta(oferta: OfertaHipotecaTipo, importe:
     if (baseRateInfoVariableSinBonif.isAssumedBase) {
       isAssumedBaseRate = true
     }
+
+    if (oferta.tinFijoBonificado !== undefined && tinBonificado !== undefined && Math.abs(tinBonificado - oferta.tinFijoBonificado) > tolerance) {
+      rateMismatchWarning = `El TIN Fijo bonificado (${oferta.tinFijoBonificado.toFixed(2)}%) no se alcanza con las bonificaciones activas.`
+    }
+    if (!rateMismatchWarning && oferta.diferencialBonificado !== undefined && diferencialBonificadoVariable !== undefined && Math.abs(diferencialBonificadoVariable - oferta.diferencialBonificado) > tolerance) {
+      rateMismatchWarning = `El diferencial variable bonificado (${oferta.diferencialBonificado.toFixed(2)}%) no se alcanza con las bonificaciones activas.`
+    }
+  }
+
+  let bonusCapWarning: string | undefined
+  const bonificacionesActivas = oferta.bonificaciones.filter(b => b.enabled !== false)
+  const reduccionActiva = bonificacionesActivas.reduce((acc, b) => acc + (b.reduccion || 0), 0)
+
+  if (oferta.topeBonificacion !== undefined && reduccionActiva.toFixed(2) < oferta.topeBonificacion.toFixed(2)) {
+    bonusCapWarning = `No se alcanza el máximo de bonificación posible. Bonificación activa: ${reduccionActiva.toFixed(2)}%, Tope: ${oferta.topeBonificacion.toFixed(2)}%`
   }
 
   let cuotaMensualVariableSinBonificar: number | undefined
@@ -275,22 +270,6 @@ export function calcularResultadoParaOferta(oferta: OfertaHipotecaTipo, importe:
     if (plazoMeses > primerMesVariableIndex) {
       cuotaMensualVariableSinBonificar = cuotasSinBonificar[primerMesVariableIndex]
       cuotaMensualVariableConBonificar = cuotasConBonificar[primerMesVariableIndex]
-    }
-  }
-
-  let rateMismatchWarning: string | undefined
-  const tolerance = 0.001
-
-  if (oferta.tipo === 'fija' && oferta.tinBonificado !== undefined && tinBonificado !== undefined && Math.abs(tinBonificado - oferta.tinBonificado) > tolerance) {
-    rateMismatchWarning = `El TIN bonificado (${oferta.tinBonificado.toFixed(2)}%) no se alcanza con las bonificaciones activas.`
-  } else if (oferta.tipo === 'variable' && oferta.diferencialBonificado !== undefined && diferencialBonificado !== undefined && Math.abs(diferencialBonificado - oferta.diferencialBonificado) > tolerance) {
-    rateMismatchWarning = `El diferencial bonificado (${oferta.diferencialBonificado.toFixed(2)}%) no se alcanza con las bonificaciones activas.`
-  } else if (oferta.tipo === 'mixta') {
-    if (oferta.tinFijoBonificado !== undefined && tinBonificado !== undefined && Math.abs(tinBonificado - oferta.tinFijoBonificado) > tolerance) {
-      rateMismatchWarning = `El TIN Fijo bonificado (${oferta.tinFijoBonificado.toFixed(2)}%) no se alcanza con las bonificaciones activas.`
-    }
-    if (!rateMismatchWarning && oferta.diferencialBonificado !== undefined && diferencialBonificadoVariable !== undefined && Math.abs(diferencialBonificadoVariable - oferta.diferencialBonificado) > tolerance) {
-      rateMismatchWarning = `El diferencial variable bonificado (${oferta.diferencialBonificado.toFixed(2)}%) no se alcanza con las bonificaciones activas.`
     }
   }
 
@@ -321,6 +300,7 @@ export function calcularResultadoParaOferta(oferta: OfertaHipotecaTipo, importe:
     cuotaMensualVariableConBonificar,
     diferencialInicialVariable,
     diferencialBonificadoVariable,
-    rateMismatchWarning
+    rateMismatchWarning,
+    bonusCapWarning
   }
 }
