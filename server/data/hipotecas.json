@@ -30,7 +30,7 @@
       {
         "id": "seguro-hogar",
         "nombre": "Seguro de hogar",
-        "costeAnual": 467.60,
+        "costeAnual": 467.6,
         "reduccionTin": 0.15,
         "isSupposed": true
       }
@@ -38,7 +38,7 @@
     "gastosAdicionales": [
       {
         "id": "tasacion",
-        "nombre": "Tasación",
+        "nombre": "Tasaciรณn",
         "coste": 600
       },
       {
@@ -57,7 +57,8 @@
         "coste": 1000
       }
     ],
-    "tinBonificado": 2.15
+    "tinBonificado": 2.15,
+    "id": "1770304262310-0"
   },
   {
     "bonificaciones": [
@@ -88,7 +89,7 @@
       {
         "id": "seguro-hogar",
         "nombre": "Seguro de hogar",
-        "costeAnual": 467.60,
+        "costeAnual": 467.6,
         "reduccionTin": 0.15,
         "isSupposed": true
       }
@@ -153,7 +154,7 @@
       {
         "id": "seguro-hogar",
         "nombre": "Seguro de hogar",
-        "costeAnual": 467.60,
+        "costeAnual": 467.6,
         "reduccionTin": 0.15,
         "isSupposed": true
       }
@@ -175,7 +176,8 @@
         "coste": 0
       }
     ],
-    "tinBonificado": 2.6
+    "tinBonificado": 2.6,
+    "id": "1770304262310-2"
   },
   {
     "bonificaciones": [
@@ -206,7 +208,7 @@
       {
         "id": "seguro-hogar",
         "nombre": "Seguro de hogar",
-        "costeAnual": 467.60,
+        "costeAnual": 467.6,
         "reduccionTin": 0.15,
         "isSupposed": true
       }
@@ -238,7 +240,7 @@
   {
     "banco": "Caixa Nueva",
     "tipo": "fija",
-    "bonificaciones": [      
+    "bonificaciones": [
       {
         "id": "nomina-domiciliada",
         "nombre": "Nómina Domiciliada",
@@ -271,7 +273,8 @@
         "coste": 1000
       }
     ],
-    "tinBonificado": 2.35
+    "tinBonificado": 2.35,
+    "id": "1770304262310-4"
   },
   {
     "banco": "Caja Rural",
@@ -327,135 +330,17 @@
         "nombre": "Cancelación Anterior",
         "coste": 0
       }
-    ]
+    ],
+    "id": "1770304262310-5"
   },
   {
-        "bonificaciones": [
-      {
-        "id": "seguro-vida",
-        "nombre": "Seguro de vida",
-        "reduccionTin": 0.3,
-        "costeAnual": 373,
-        "isSupposed": false,
-        "reduccionDiferencial": null,
-        "reduccionTinFijo": null
-      },
-      {
-        "id": "seguro-hogar",
-        "nombre": "Seguro de hogar",
-        "reduccionTin": 0.15,
-        "costeAnual": 435.96,
-        "isSupposed": false,
-        "reduccionDiferencial": null,
-        "reduccionTinFijo": null
-      },
-      {
-        "id": "nomina-domiciliada",
-        "nombre": "Nómina Domiciliada",
-        "reduccionTin": 0.45,
-        "costeAnual": 0,
-        "isSupposed": false,
-        "reduccionDiferencial": null,
-        "reduccionTinFijo": null
-      }
-    ],
-    "gastosAdicionales": [
-      {
-        "id": "tasacion",
-        "nombre": "Tasación",
-        "coste": 600
-      },
-      {
-        "id": "comision-broker",
-        "nombre": "Comisión Bróker",
-        "coste": 0
-      },
-      {
-        "id": "otros-gastos",
-        "nombre": "Otros Gastos",
-        "coste": 0
-      },
-      {
-        "id": "cancelacion-anterior",
-        "nombre": "Cancelación Anterior",
-        "coste": 0
-      }
-    ],
-    "tipo": "mixta",
-    "banco": "Caja Rural Mixta 5 Subrogacion (supongo se puede mejorar)",
-    "plazoFijoAnios": 5,
-    "tinFijoBonificado": 2.40,
-    "diferencialBonificado": 0.74
-  },
-  {
-        "bonificaciones": [
-      {
-        "id": "seguro-vida",
-        "nombre": "Seguro de vida",
-        "reduccionTin": 0.3,
-        "costeAnual": 373,
-        "isSupposed": false,
-        "reduccionDiferencial": null,
-        "reduccionTinFijo": null
-      },
-      {
-        "id": "seguro-hogar",
-        "nombre": "Seguro de hogar",
-        "reduccionTin": 0.15,
-        "costeAnual": 435.96,
-        "isSupposed": false,
-        "reduccionDiferencial": null,
-        "reduccionTinFijo": null
-      },
-      {
-        "id": "nomina-domiciliada",
-        "nombre": "Nómina Domiciliada",
-        "reduccionTin": 0.45,
-        "costeAnual": 0,
-        "isSupposed": false,
-        "reduccionDiferencial": null,
-        "reduccionTinFijo": null
-      }
-    ],
-    "gastosAdicionales": [
-      {
-        "id": "tasacion",
-        "nombre": "Tasación",
-        "coste": 600
-      },
-      {
-        "id": "comision-broker",
-        "nombre": "Comisión Bróker",
-        "coste": 0
-      },
-      {
-        "id": "otros-gastos",
-        "nombre": "Otros Gastos",
-        "coste": 0
-      },
-      {
-        "id": "cancelacion-anterior",
-        "nombre": "Cancelación Anterior",
-        "coste": 0
-      }
-    ],
-    "tipo": "mixta",
-    "banco": "Caja Rural Mixta 10 Subrogacion (supongo se puede mejorar)",
-    "plazoFijoAnios": 10,
-    "tinFijoBonificado": 2.65,
-    "diferencialBonificado": 0.74
-  },
-  {
-    "banco": "Ibercaja",
-    "tipo": "fija",
-    "tinBonificado": 2.3,
     "bonificaciones": [
       {
         "id": "seguro-vida",
         "nombre": "Seguro de vida",
         "reduccionTin": 0.3,
         "costeAnual": 373,
-        "isSupposed": true,
+        "isSupposed": false,
         "reduccionDiferencial": null,
         "reduccionTinFijo": null
       },
@@ -464,7 +349,7 @@
         "nombre": "Seguro de hogar",
         "reduccionTin": 0.15,
         "costeAnual": 435.96,
-        "isSupposed": true,
+        "isSupposed": false,
         "reduccionDiferencial": null,
         "reduccionTinFijo": null
       },
@@ -499,7 +384,136 @@
         "nombre": "Cancelación Anterior",
         "coste": 1000
       }
-    ]
+    ],
+    "tipo": "mixta",
+    "banco": "Caja Rural Mixta 5 Nueva (mejorada en principio al max)",
+    "plazoFijoAnios": 5,
+    "tinFijoBonificado": 2.2,
+    "diferencialBonificado": 0.54,
+    "id": "1770304262310-6"
+  },
+  {
+    "bonificaciones": [
+      {
+        "id": "seguro-vida",
+        "nombre": "Seguro de vida",
+        "reduccionTin": 0.35,
+        "costeAnual": 275,
+        "isSupposed": false,
+        "reduccionDiferencial": null,
+        "reduccionTinFijo": null
+      },
+      {
+        "id": "seguro-hogar",
+        "nombre": "Seguro de hogar",
+        "reduccionTin": 0.2,
+        "costeAnual": 450,
+        "isSupposed": false,
+        "reduccionDiferencial": null,
+        "reduccionTinFijo": null
+      },
+      {
+        "id": "nomina-domiciliada",
+        "nombre": "Nómina Domiciliada",
+        "reduccionTin": 0.45,
+        "costeAnual": 0,
+        "isSupposed": false,
+        "reduccionDiferencial": null,
+        "reduccionTinFijo": null
+      }
+    ],
+    "gastosAdicionales": [
+      {
+        "id": "tasacion",
+        "nombre": "Tasación",
+        "coste": 600
+      },
+      {
+        "id": "comision-broker",
+        "nombre": "Comisión Bróker",
+        "coste": 0
+      },
+      {
+        "id": "otros-gastos",
+        "nombre": "Otros Gastos",
+        "coste": 0
+      },
+      {
+        "id": "cancelacion-anterior",
+        "nombre": "Cancelación Anterior",
+        "coste": 1000
+      }
+    ],
+    "tipo": "mixta",
+    "banco": "Caja Rural Mixta 10 Nueva (mejorada en principio al max)",
+    "plazoFijoAnios": 10,
+    "tinFijoBonificado": 2.45,
+    "diferencialBonificado": 0.54,
+    "id": "1770304262310-7"
+  },
+  {
+    "banco": "Ibercaja",
+    "tipo": "fija",
+    "tin": 3.3,
+    "bonificaciones": [
+      {
+        "id": "seguro-vida",
+        "nombre": "Seguro de vida",
+        "reduccionTin": 0.35,
+        "costeAnual": 275,
+        "isSupposed": false,
+        "reduccionDiferencial": null,
+        "reduccionTinFijo": null
+      },
+      {
+        "id": "seguro-hogar",
+        "nombre": "Seguro de hogar",
+        "reduccionTin": 0.2,
+        "costeAnual": 450,
+        "isSupposed": false,
+        "reduccionDiferencial": null,
+        "reduccionTinFijo": null
+      },
+      {
+        "id": "nomina-domiciliada",
+        "nombre": "Nómina Domiciliada",
+        "reduccionTin": 0.15,
+        "costeAnual": 0,
+        "isSupposed": false,
+        "reduccionDiferencial": null,
+        "reduccionTinFijo": null
+      },
+      {
+        "id": "seguro-de-auto",
+        "nombre": "Seguro de auto",
+        "costeAnual": 500,
+        "reduccionTin": 0.2,
+        "isSupposed": false
+      }
+    ],
+    "gastosAdicionales": [
+      {
+        "id": "tasacion",
+        "nombre": "Tasación",
+        "coste": 300
+      },
+      {
+        "id": "comision-broker",
+        "nombre": "Comisión Bróker",
+        "coste": 0
+      },
+      {
+        "id": "otros-gastos",
+        "nombre": "Otros Gastos",
+        "coste": 0
+      },
+      {
+        "id": "cancelacion-anterior",
+        "nombre": "Cancelación Anterior",
+        "coste": 1000
+      }
+    ],
+    "id": "1770304262310-8"
   },
   {
     "banco": "Ibercaja Mixta10",
@@ -507,8 +521,8 @@
       {
         "id": "seguro-vida",
         "nombre": "Seguro de vida",
-        "costeAnual": 373,
-        "reduccionTin": 0.3,
+        "costeAnual": 275,
+        "reduccionTin": 0.35,
         "isSupposed": true,
         "reduccionDiferencial": null,
         "reduccionTinFijo": null
@@ -516,9 +530,9 @@
       {
         "id": "seguro-hogar",
         "nombre": "Seguro de hogar",
-        "costeAnual": 435.96,
-        "reduccionTin": 0.15,
-        "isSupposed": true,
+        "costeAnual": 450,
+        "isSupposed": false,
+        "reduccionTin": 0.2,
         "reduccionDiferencial": null,
         "reduccionTinFijo": null
       },
@@ -526,21 +540,28 @@
         "id": "nomina-domiciliada",
         "nombre": "Nómina Domiciliada",
         "costeAnual": 0,
-        "reduccionTin": 0.45,
+        "reduccionTin": 0.15,
         "isSupposed": false,
         "reduccionDiferencial": null,
         "reduccionTinFijo": null
+      },
+      {
+        "id": "seguro-de-auto",
+        "nombre": "Seguro de auto",
+        "costeAnual": 500,
+        "reduccionTin": 0.2,
+        "isSupposed": false
       }
     ],
     "tipo": "mixta",
     "plazoFijoAnios": 10,
-    "tinFijoBonificado": 1.85,
-    "diferencialBonificado": 0.6,
+    "tinFijo": 2.85,
+    "diferencial": 1.6,
     "gastosAdicionales": [
       {
         "id": "tasacion",
         "nombre": "Tasación",
-        "coste": 600
+        "coste": 300
       },
       {
         "id": "comision-broker",
@@ -557,6 +578,7 @@
         "nombre": "Cancelación Anterior",
         "coste": 1000
       }
-    ]
+    ],
+    "id": "1770304262310-9"
   }
 ]
