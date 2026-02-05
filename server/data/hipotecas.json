@@ -6,7 +6,7 @@
       {
         "id": "seguro-vida",
         "nombre": "Seguro de vida",
-        "reduccionTin": 0.4,
+        "reduccionTin": 0.15,
         "costeAnual": 369.52,
         "isSupposed": false,
         "reduccionDiferencial": null,
@@ -15,7 +15,7 @@
       {
         "id": "nomina-domiciliada",
         "nombre": "Nómina Domiciliada",
-        "reduccionTin": 0.45,
+        "reduccionTin": 0.5,
         "costeAnual": 0,
         "isSupposed": false,
         "reduccionDiferencial": null,
@@ -31,8 +31,8 @@
         "id": "seguro-hogar",
         "nombre": "Seguro de hogar",
         "costeAnual": 467.6,
-        "reduccionTin": 0.15,
-        "isSupposed": true
+        "reduccionTin": 0.2,
+        "isSupposed": false
       }
     ],
     "gastosAdicionales": [
@@ -65,7 +65,7 @@
       {
         "id": "seguro-vida",
         "nombre": "Seguro de vida",
-        "reduccionTin": 0.4,
+        "reduccionTin": 0.15,
         "costeAnual": 369.52,
         "isSupposed": false,
         "reduccionDiferencial": null,
@@ -74,7 +74,7 @@
       {
         "id": "nomina-domiciliada",
         "nombre": "Nómina Domiciliada",
-        "reduccionTin": 0.45,
+        "reduccionTin": 0.5,
         "costeAnual": 0,
         "isSupposed": false,
         "reduccionDiferencial": null,
@@ -90,8 +90,8 @@
         "id": "seguro-hogar",
         "nombre": "Seguro de hogar",
         "costeAnual": 467.6,
-        "reduccionTin": 0.15,
-        "isSupposed": true
+        "reduccionTin": 0.2,
+        "isSupposed": false
       }
     ],
     "gastosAdicionales": [
@@ -130,7 +130,7 @@
       {
         "id": "seguro-vida",
         "nombre": "Seguro de vida",
-        "reduccionTin": 0.4,
+        "reduccionTin": 0.15,
         "costeAnual": 369.52,
         "isSupposed": false,
         "reduccionDiferencial": null,
@@ -139,7 +139,7 @@
       {
         "id": "nomina-domiciliada",
         "nombre": "Nómina Domiciliada",
-        "reduccionTin": 0.45,
+        "reduccionTin": 0.5,
         "costeAnual": 0,
         "isSupposed": false,
         "reduccionDiferencial": null,
@@ -155,8 +155,8 @@
         "id": "seguro-hogar",
         "nombre": "Seguro de hogar",
         "costeAnual": 467.6,
-        "reduccionTin": 0.15,
-        "isSupposed": true
+        "reduccionTin": 0.2,
+        "isSupposed": false
       }
     ],
     "gastosAdicionales": [
@@ -181,10 +181,10 @@
   },
   {
     "bonificaciones": [
-      {
+     {
         "id": "seguro-vida",
         "nombre": "Seguro de vida",
-        "reduccionTin": 0.4,
+        "reduccionTin": 0.15,
         "costeAnual": 369.52,
         "isSupposed": false,
         "reduccionDiferencial": null,
@@ -193,7 +193,7 @@
       {
         "id": "nomina-domiciliada",
         "nombre": "Nómina Domiciliada",
-        "reduccionTin": 0.45,
+        "reduccionTin": 0.5,
         "costeAnual": 0,
         "isSupposed": false,
         "reduccionDiferencial": null,
@@ -209,8 +209,8 @@
         "id": "seguro-hogar",
         "nombre": "Seguro de hogar",
         "costeAnual": 467.6,
-        "reduccionTin": 0.15,
-        "isSupposed": true
+        "reduccionTin": 0.2,
+        "isSupposed": false
       }
     ],
     "gastosAdicionales": [
@@ -273,7 +273,7 @@
         "coste": 1000
       }
     ],
-    "tinBonificado": 2.35,
+    "tin": 3.1,
     "id": "1770304262310-4"
   },
   {
@@ -388,8 +388,8 @@
     "tipo": "mixta",
     "banco": "Caja Rural Mixta 5 Nueva (mejorada en principio al max)",
     "plazoFijoAnios": 5,
-    "tinFijoBonificado": 2.2,
-    "diferencialBonificado": 0.54,
+    "tinFijo": 3.1,
+    "diferencial": 1.44,
     "id": "1770304262310-6"
   },
   {
@@ -398,7 +398,7 @@
         "id": "seguro-vida",
         "nombre": "Seguro de vida",
         "reduccionTin": 0.35,
-        "costeAnual": 275,
+        "costeAnual": 373,
         "isSupposed": false,
         "reduccionDiferencial": null,
         "reduccionTinFijo": null
@@ -447,8 +447,8 @@
     "tipo": "mixta",
     "banco": "Caja Rural Mixta 10 Nueva (mejorada en principio al max)",
     "plazoFijoAnios": 10,
-    "tinFijoBonificado": 2.45,
-    "diferencialBonificado": 0.54,
+    "tinFijo": 3.35,
+    "diferencial": 1.44,
     "id": "1770304262310-7"
   },
   {
@@ -477,7 +477,7 @@
       {
         "id": "nomina-domiciliada",
         "nombre": "Nómina Domiciliada",
-        "reduccionTin": 0.15,
+        "reduccionTin": 0.30,
         "costeAnual": 0,
         "isSupposed": false,
         "reduccionDiferencial": null,
@@ -540,7 +540,7 @@
         "id": "nomina-domiciliada",
         "nombre": "Nómina Domiciliada",
         "costeAnual": 0,
-        "reduccionTin": 0.15,
+        "reduccionTin": 0.30,
         "isSupposed": false,
         "reduccionDiferencial": null,
         "reduccionTinFijo": null
