@@ -18,5 +18,9 @@
   {
     "id": "plan-de-pensiones",
     "nombre": "Plan de pensiones"
+  },
+  {
+    "id": "seguro-de-auto",
+    "nombre": "Seguro de auto"
   }
 ]
