@@ -158,12 +158,10 @@ async function cargarOfertas() {
   try {
     const response = await $fetch<OfertaHipotecaTipo[]>('/api/hipotecas')
 
-    ofertasHipotecas.value = response.map(oferta => ({
-
+    ofertasHipotecas.value = response.map((oferta, index) => ({
       ...oferta,
-
+      id: oferta.id ?? index, // Asignar índice como ID si no existe
       bonificaciones: oferta.bonificaciones.map(b => ({ ...b, enabled: true }))
-
     }))
   } catch (error) {
     console.error('Error al cargar las ofertas de hipotecas:', error)

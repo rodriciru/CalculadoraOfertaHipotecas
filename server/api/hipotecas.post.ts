@@ -13,7 +13,16 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    await fs.writeFile(filePath, JSON.stringify(body, null, 2), 'utf8')
+    // Asegurar que cada hipoteca tenga un ID único y persistente
+    const processedBody = body.map((hipoteca, index) => {
+      if (!hipoteca.id) {
+        // Si no tiene ID, se le asigna uno nuevo y único.
+        hipoteca.id = `${Date.now()}-${index}`
+      }
+      return hipoteca
+    })
+
+    await fs.writeFile(filePath, JSON.stringify(processedBody, null, 2), 'utf8')
     return { success: true, message: 'Hipotecas guardadas correctamente' }
   } catch (error) {
     console.error('Error al guardar hipotecas.json:', error)
