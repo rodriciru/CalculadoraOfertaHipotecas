@@ -12,6 +12,7 @@ const emit = defineEmits(['verGrafico', 'alternarBonificacion'])
 
 // Resolvemos componentes de Nuxt UI para usarlos en las funciones de renderizado
 const UButton = resolveComponent('UButton')
+const UBadge = resolveComponent('UBadge')
 
 // DEFINICIÓN DE COLUMNAS Y RENDERIZADO
 const columns: TableColumn<IResultadoCalculo>[] = [
@@ -22,8 +23,18 @@ const columns: TableColumn<IResultadoCalculo>[] = [
       const res = row.original // Accedemos al objeto completo de la fila
 
       // 1. Construir cabecera: Banco (Tipo) y Tope Bonificación
+      const colors = { Fija: 'success', Variable: 'error', Mixta: 'warning' } as const
+      const typeBadge = h(UBadge, {
+        variant: 'subtle',
+        color: colors[res.tipo as keyof typeof colors] || 'gray',
+        class: 'ml-2'
+      }, () => res.tipo)
+
       const headerContent = [
-        h('strong', { class: 'text-gray-900 dark:text-white' }, `${res.banco} (${res.tipo})`)
+        h('div', { class: 'flex items-center' }, [
+          h('strong', { class: 'text-gray-900 dark:text-white' }, res.banco),
+          typeBadge
+        ])
       ]
 
       if (res.oferta.topeBonificacion !== undefined) {
