@@ -20,6 +20,7 @@ export interface IOfertaBase {
   banco: string
   gastosAdicionales: IGasto[]
   bonificaciones: IBonificacion[] // Usar IBonificacion
+  topeBonificacion?: number
 }
 
 export interface IOfertaFija extends IOfertaBase {
@@ -79,4 +80,5 @@ export interface IResultadoCalculo {
   cuotaMensualVariableConBonificar?: number
   diferencialInicialVariable?: number
   diferencialBonificadoVariable?: number
+  rateMismatchWarning?: string
 }

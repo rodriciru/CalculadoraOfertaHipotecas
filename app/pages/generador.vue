@@ -517,6 +517,14 @@ function setNumericValue(value: string | number, updater: (val: number) => void)
                 :items="['fija', 'variable', 'mixta']"
               />
             </UFormField>
+            <UFormField label="Tope Bonificación %">
+              <UInput
+                v-model="editor.data.topeBonificacion"
+                type="number"
+                step="0.05"
+                @update:model-value="(val: string | number) => setNumericValue(val, v => editor.data.topeBonificacion = v)"
+              />
+            </UFormField>
           </div>
 
           <!-- COLUMNA DERECHA: CONDICIONES DETALLADAS -->

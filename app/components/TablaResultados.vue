@@ -21,8 +21,16 @@ const columns: TableColumn<IResultadoCalculo>[] = [
     cell: ({ row }) => {
       const res = row.original // Accedemos al objeto completo de la fila
 
-      // 1. Construir cabecera: Banco (Tipo)
-      const header = h('strong', { class: 'text-gray-900 dark:text-white' }, `${res.banco} (${res.tipo})`)
+      // 1. Construir cabecera: Banco (Tipo) y Tope Bonificación
+      const headerContent = [
+        h('strong', { class: 'text-gray-900 dark:text-white' }, `${res.banco} (${res.tipo})`)
+      ]
+
+      if (res.oferta.topeBonificacion !== undefined) {
+        headerContent.push(h('span', { class: 'block text-xs text-blue-600 dark:text-blue-400 font-semibold' }, `Tope Bonificación: ${res.oferta.topeBonificacion.toFixed(2)}%`))
+      }
+
+      const header = h('div', {}, headerContent)
 
       // 2. Construir detalles de TIN/Diferencial según tipo
       let rateDetails = null
@@ -121,6 +129,10 @@ const columns: TableColumn<IResultadoCalculo>[] = [
         breakdownItems.length > 0 ? h('ul', { class: 'list-disc list-inside ml-2 text-xs' }, breakdownItems) : null
       ])
 
+      const warning = res.rateMismatchWarning
+        ? h('div', { class: 'mt-2 p-2 bg-yellow-100 dark:bg-yellow-800 border-l-4 border-yellow-500 text-yellow-700 dark:text-yellow-200 text-xs' }, res.rateMismatchWarning)
+        : null
+
       // Coste Total Real (Extras)
       let realCost = null
       if (res.productosPersonalesIncluidos && res.productosPersonalesIncluidos.length > 0) {
@@ -135,7 +147,7 @@ const columns: TableColumn<IResultadoCalculo>[] = [
         )
       }
 
-      return h('div', { class: 'whitespace-normal' }, [tae, typeDetails, quotas, totalCost, realCost])
+      return h('div', { class: 'whitespace-normal' }, [tae, typeDetails, warning, quotas, totalCost, realCost])
     }
   },
   {

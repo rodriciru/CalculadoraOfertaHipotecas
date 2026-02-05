@@ -176,6 +176,8 @@ function alternarBonificacion({ hipotecaId, bonificacionId }: { hipotecaId: numb
 
     if (bonus) {
       bonus.enabled = !bonus.enabled
+      // Forzar reactividad
+      ofertasHipotecas.value = [...ofertasHipotecas.value]
     }
   }
 }

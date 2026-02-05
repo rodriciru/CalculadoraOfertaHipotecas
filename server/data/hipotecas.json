@@ -58,7 +58,8 @@
       }
     ],
     "tinBonificado": 2.15,
-    "id": "1770304262310-0"
+    "id": "1770304262310-0",
+    "topeBonificacion": 1
   },
   {
     "bonificaciones": [
@@ -121,7 +122,8 @@
     "plazoFijoAnios": 5,
     "tinFijoBonificado": 1.4,
     "diferencialBonificado": 0.4,
-    "id": 1770027768145
+    "id": "1770027768145-80",
+    "topeBonificacion": 1
   },
   {
     "banco": "Unicaja Subrogacion",
@@ -177,7 +179,8 @@
       }
     ],
     "tinBonificado": 2.6,
-    "id": "1770304262310-2"
+    "id": "1770304262310-2",
+    "topeBonificacion": 1
   },
   {
     "bonificaciones": [
@@ -235,7 +238,8 @@
     "plazoFijoAnios": 5,
     "tinFijoBonificado": 1.85,
     "diferencialBonificado": 0.85,
-    "id": 1770027768145
+    "id": 1770027768145,
+    "topeBonificacion": 1
   },
   {
     "banco": "Caixa Nueva",
@@ -274,7 +278,8 @@
       }
     ],
     "tin": 3.1,
-    "id": "1770304262310-4"
+    "id": "1770304262310-4",
+    "topeBonificacion": 0.75
   },
   {
     "banco": "Caja Rural",
@@ -331,7 +336,8 @@
         "coste": 0
       }
     ],
-    "id": "1770304262310-5"
+    "id": "1770304262310-5",
+    "topeBonificacion": 0.9
   },
   {
     "bonificaciones": [
@@ -390,7 +396,8 @@
     "plazoFijoAnios": 5,
     "tinFijo": 3.1,
     "diferencial": 1.44,
-    "id": "1770304262310-6"
+    "id": "1770304262310-6",
+    "topeBonificacion": 0.9
   },
   {
     "bonificaciones": [
@@ -449,7 +456,8 @@
     "plazoFijoAnios": 10,
     "tinFijo": 3.35,
     "diferencial": 1.44,
-    "id": "1770304262310-7"
+    "id": "1770304262310-7",
+    "topeBonificacion": 0.9
   },
   {
     "banco": "Ibercaja",
@@ -513,7 +521,8 @@
         "coste": 1000
       }
     ],
-    "id": "1770304262310-8"
+    "id": "1770304262310-8",
+    "topeBonificacion": 1
   },
   {
     "banco": "Ibercaja Mixta10",
@@ -579,6 +588,7 @@
         "coste": 1000
       }
     ],
-    "id": "1770304262310-9"
+    "id": "1770304262310-9",
+    "topeBonificacion": 1
   }
 ]
